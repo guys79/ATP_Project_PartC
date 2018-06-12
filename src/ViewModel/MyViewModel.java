@@ -1,5 +1,7 @@
 package ViewModel;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -9,6 +11,6 @@ import java.util.Observer;
 public class MyViewModel extends Observable implements Observer {
     @Override
     public void update(Observable o, Object arg) {
-
+        throw new NotImplementedException();
     }
 }
