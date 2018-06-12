@@ -41,4 +41,12 @@ public interface IModel {
      * @return - The column position of the character
      */
     public int getCharacterPositionColumn();
+
+
+    /**
+     * This function will check whether the new move is a legal move or not
+     * @param movement - The movement
+     * @return
+     */
+    public boolean IsLegalMove(KeyCode movement);
 }

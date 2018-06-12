@@ -56,4 +56,14 @@ public class MyModel extends Observable implements IModel {
     {
         throw new NotImplementedException();
     }
+
+    /**
+     * This function will check whether the new move is a legal move or not
+     * @param movement - The movement
+     * @return
+     */
+    public boolean IsLegalMove(KeyCode movement)
+    {
+        throw new NotImplementedException();
+    }
 }
