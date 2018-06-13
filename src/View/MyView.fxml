@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import View.MazeDisplayer?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -7,20 +8,21 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.TilePane?>
-<?import javafx.scene.layout.AnchorPane?>
-<BorderPane fx:id="BorderPaneId" onKeyPressed="#KeyPressed" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="BorderPaneId" onKeyPressed="#KeyPressed" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <left>
         <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
-                <GridPane prefHeight="${BorderPaneId.height}"  prefWidth="${BorderPaneId.width}">
+                <GridPane prefHeight="${BorderPaneId.height}" prefWidth="${BorderPaneId.width}">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -36,8 +38,8 @@
                     </rowConstraints>
                     <Label text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <Label text="Maze columns:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="txtfld_rowsNum" disable="false" text="50" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                    <TextField fx:id="txtfld_columnsNum" disable="false" text="50" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <TextField fx:id="txtfld_rowsNum" disable="false" text="10" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <TextField fx:id="txtfld_columnsNum" disable="false" text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <TilePane GridPane.columnSpan="2" GridPane.rowIndex="2">
                         <children>
                             <Button fx:id="btn_generateMaze" onAction="#generateMaze" prefHeight="25.0" prefWidth="167.0" text="Generate Maze" />
@@ -48,17 +50,7 @@
                     <Label text="Char column:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                     <Label fx:id="lbl_rowsNum" text="${controller.characterPositionRow}" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     <Label fx:id="lbl_columnsNum" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                    <!--<Label GridPane.columnIndex="1" GridPane.rowIndex="4" text="${controller.characterPositionRow}" />-->
-                    <!--<Label GridPane.columnIndex="1" GridPane.rowIndex="5" text="${controller.characterPositionColumn}"/>-->
-                    <!--                    <ChoiceBox value="2 minutes" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                            <items>
-                                                <FXCollections fx:factory="observableArrayList">
-                                                    <String fx:value="2 minutes" />
-                                                    <String fx:value="5 minutes" />
-                                                    <String fx:value="15 minutes" />
-                                                </FXCollections>
-                                            </items>
-                                        </ChoiceBox>-->
+
                 </GridPane>
             </children>
             <padding>
@@ -80,19 +72,21 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Save Maze" />
-                                <MenuItem mnemonicParsing="false" text="Load Maze" />
-                                <MenuItem mnemonicParsing="false" text="Exit" />
+                                <MenuItem mnemonicParsing="false" onAction="#saveMaze" text="Save Maze" />
+                                <MenuItem mnemonicParsing="false" onAction="#loadMaze" text="Load Maze" />
+                                <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Edit">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Change Settings" />
                                 <Menu mnemonicParsing="false" text="Change Style">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="Classic" />
+                              <MenuItem mnemonicParsing="false" text="Classic" onAction="#changeStyle" userData="classic"/>
+                                        <MenuItem mnemonicParsing="false" text="Style 1" onAction="#changeStyle" userData="style1"/>
+                              <MenuItem mnemonicParsing="false" text="Style 2" onAction="#changeStyle" userData="style2"/>
                                     </items>
                                 </Menu>
+                                <MenuItem mnemonicParsing="false" text="Change Settings" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">
@@ -111,14 +105,7 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="600.0" width="600.0"
-                                       imageFileNameCharacter="resources/Images/character1.jpg"
-                                       imageFileNameWall="resources/Images/wall3.jpg" />
-                <AnchorPane layoutY="19.0">
-                    <children>
-                        <Button fx:id="test" mnemonicParsing="false" text="Button" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                    </children>
-                </AnchorPane>
+                <MazeDisplayer fx:id="mazeDisplayer" height="600.0"  width="600.0" />
             </children>
         </Pane>
     </center>

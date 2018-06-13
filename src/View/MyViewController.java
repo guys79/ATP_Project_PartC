@@ -4,13 +4,16 @@ import ViewModel.MyViewModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Observable;
@@ -24,6 +27,7 @@ public class MyViewController  implements Observer, IView {
 
     @FXML
     private MyViewModel viewModel; // The view model
+    private Stage primaryStage; //The primary stage
     public MazeDisplayer mazeDisplayer;// The maze displayer ("our widget")
     public javafx.scene.control.TextField txtfld_rowsNum;
     public javafx.scene.control.TextField txtfld_columnsNum;
@@ -41,6 +45,7 @@ public class MyViewController  implements Observer, IView {
      * @param viewModel - The viewModel
      */
     public void setViewModel(MyViewModel viewModel) {
+
         this.viewModel = viewModel;//Set the view model to the given model
 
         //Binding the labels to the string property in the viewModel
@@ -169,10 +174,69 @@ public class MyViewController  implements Observer, IView {
         }
     }
 
+    /**
+     * This function is responsible to load a maze from the computer
+     */
+    public void loadMaze()
+    {
+        this.viewModel.loadMaze();
+    }
+
+    /**
+     * This function is responsible to save a maze on the computer
+     */
+    public void saveMaze()
+    {
+        this.viewModel.saveMaze();
+    }
+
+    /**
+     * This function is responsible to exit the app
+     */
+    public void exit()
+    {
+        primaryStage.close();
+
+
+    }
+
+    @FXML
+    /**
+     * This function will change the style of the maze
+     */
+    public void changeStyle(ActionEvent event)
+    {
+        //Receiving the kind of style that the user wants
+        Node node = (Node) event.getSource() ;
+        String data = (String) node.getUserData();
+
+        //In each case we will select differently
+        switch (data) {
+            case "classic":
+            {
+
+            }
+            case "style1":
+            {
+
+            }
+            case "style2":
+            {
+
+            }
+
+        }
+        throw new NotImplementedException();
+    }
 
 //Has a potential to solve the size problem
 public void setResizeEvent(Scene scene) {
     throw new NotImplementedException();
+}
+
+public void setPrimaryStage(Stage primaryStage)
+{
+    this.primaryStage=primaryStage;
 }
 
 }

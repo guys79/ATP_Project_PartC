@@ -34,10 +34,42 @@ public class MyViewModel extends Observable implements Observer {
         this.model = model;
     }
 
+    /**
+     * This function will handle the notification of the model
+     * @param o - The observable
+     * @param arg - The runtime argument
+     */
     @Override
     public void update(Observable o, Object arg) {
+        //If the model is our model (cause the other observables dose not interest us)
+        if (o==model){
+            //Setting the character's position
+            characterPositionRowIndex = model.getCharacterPositionRow();
+            characterPositionRow.set(characterPositionRowIndex + "");
+            characterPositionColumnIndex = model.getCharacterPositionColumn();
+            characterPositionColumn.set(characterPositionColumnIndex + "");
+            //Stating that we made changes
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+    /**
+     * This function is responsible to load a maze from the computer
+     */
+    public void loadMaze()
+    {
         throw new NotImplementedException();
     }
+
+    /**
+     * This function is responsible to save a maze on the computer
+     */
+    public void saveMaze()
+    {
+        throw new NotImplementedException();
+    }
+
 
     /**
      * This function will return the value of the string property
@@ -111,7 +143,7 @@ public class MyViewModel extends Observable implements Observer {
      * @param movement - The movement of the character.. the way the character moved
      */
     public void moveCharacter(KeyCode movement) {
-        throw new NotImplementedException();
+        model.moveCharacter(movement);
     }
 
     /**
@@ -121,6 +153,6 @@ public class MyViewModel extends Observable implements Observer {
      * @param height - The height of the maze
      */
     public void generateMaze(int width, int height) {
-        throw new NotImplementedException();
+        model.generateMaze(width, height);
     }
 }
