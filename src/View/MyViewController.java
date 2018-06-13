@@ -1,6 +1,10 @@
 package View;
 
 import ViewModel.MyViewModel;
+import algorithms.mazeGenerators.Position;
+import algorithms.search.AState;
+import algorithms.search.MazeState;
+import algorithms.search.Solution;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -16,6 +20,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -70,6 +75,29 @@ public class MyViewController  implements Observer, IView {
         //Display the character's location
         this.characterPositionRow.set(characterPositionRow + "");
         this.characterPositionColumn.set(characterPositionColumn + "");
+
+        if(this.viewModel.lastChangeBecauseOfSolve())
+        {
+            this.mazeDisplayer.drawSolution(this.viewModel.getSol());
+        }
+    }
+
+    public void solveMaze(){
+     //   this.viewModel.solveMaze();
+        ArrayList<AState> path=new ArrayList<>();
+        path.add(new MazeState(new Position(1,1)));
+        path.add(new MazeState(new Position(2,1)));
+        path.add(new MazeState(new Position(3,1)));
+        path.add(new MazeState(new Position(4,1)));
+        path.add(new MazeState(new Position(5,1)));
+        path.add(new MazeState(new Position(6,1)));
+        path.add(new MazeState(new Position(7,2)));
+        path.add(new MazeState(new Position(7,3)));
+        path.add(new MazeState(new Position(7,4)));
+        path.add(new MazeState(new Position(7,5)));
+
+        Solution sol=new Solution(path);
+        mazeDisplayer.drawSolution(sol);
     }
 
     /**
@@ -81,9 +109,11 @@ public class MyViewController  implements Observer, IView {
     public void update(Observable o, Object arg) {
         //If the observable is our model (right now we don't care about other observables
         if (o == viewModel) {
+
             //Display the maze
             displayMaze(viewModel.getMaze());
             //Allow to the user to keep generating maze
+
             btn_generateMaze.setDisable(false);
         }
     }

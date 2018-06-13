@@ -1,5 +1,6 @@
 package Model;
 
+import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
 
 
@@ -49,4 +50,11 @@ public interface IModel {
      * @return
      */
     public boolean IsLegalMove(KeyCode movement);
+
+    public void solveMaze();
+
+    public boolean lastChangeBecauseOfSolve();
+
+    public Solution getSolution();
+
 }

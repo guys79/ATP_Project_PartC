@@ -1,5 +1,8 @@
 package View;
 
+import algorithms.search.AState;
+import algorithms.search.MazeState;
+import algorithms.search.Solution;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -9,9 +12,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-import javax.xml.bind.SchemaOutputResolver;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 ;
 
 /**
@@ -28,6 +32,11 @@ public class MazeDisplayer extends Canvas {
     private StringProperty ImageFileNameWall = new SimpleStringProperty();
     private StringProperty ImageFileNameCharacter = new SimpleStringProperty();
     private StringProperty ImageFilePath = new SimpleStringProperty();
+    private StringProperty ImageFileNameStart = new SimpleStringProperty();
+    private StringProperty ImageFileNameEnd = new SimpleStringProperty();
+    private StringProperty ImageFileNameSol = new SimpleStringProperty();
+
+
 
 
     /**
@@ -112,11 +121,21 @@ public class MazeDisplayer extends Canvas {
      * This function is responsible to draw the maze with the given data (The fields of this class)
      */
     public void redraw() {
+
         if (ImageFileNameCharacter.getValue() == null || ImageFileNameWall.getValue() == null || ImageFilePath==null) {
             nullHandle();
         } else {
+            if(ImageFileNameStart.getValue()==null)
+                ImageFileNameStart.setValue(ImageFilePath.getValue());
+            if(ImageFileNameEnd.getValue()==null)
+            {
+
+                ImageFileNameEnd.setValue(ImageFilePath.getValue());
+
+            }
             //If there is a maze
             if (maze != null) {
+
                 //Get the size of the canvas
                 double canvasHeight = getHeight();
                 double canvasWidth = getWidth();
@@ -129,6 +148,7 @@ public class MazeDisplayer extends Canvas {
                     //Getting the images
                     Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
                     Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
+                    Image pathImage = new Image(new FileInputStream(ImageFilePath.get()));
 
                     //Create the maze structure
                     GraphicsContext gc = getGraphicsContext2D();
@@ -141,6 +161,10 @@ public class MazeDisplayer extends Canvas {
                             if (maze[i][j] == 1) {
                                 gc.drawImage(wallImage, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
 
+                            }
+                            else
+                            {
+                                gc.drawImage(pathImage, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
                             }
                         }
 
@@ -156,7 +180,27 @@ public class MazeDisplayer extends Canvas {
         }
     }
 
+    public void drawSolution(Solution sol)
+    {   double canvasHeight = getHeight();
+        double canvasWidth = getWidth();
 
+        //Calculate the size of each  cell in the maze
+        double cellHeight = canvasHeight / maze.length;
+        double cellWidth = canvasWidth / maze[0].length;
+        int i=1;
+        if(this.getImageFileNameStart().equals(this.getImageFilePath()))
+            i=0;
+        int j=1;
+        if(this.getImageFileNameEnd().equals(this.getImageFilePath()))
+            j=0;
+        ArrayList<AState> path=sol.getSolutionPath();
+        GraphicsContext gc = getGraphicsContext2D();
+        gc.setFill(Color.GOLD);
+        for(;i<path.size()-j;i++)
+        {
+            gc.fillRect(((MazeState)path.get(i)).getCurrentPosition().GetRowIndex() * cellHeight, ((MazeState)path.get(i)).getCurrentPosition().GetColumnIndex() * cellWidth, cellHeight, cellWidth);
+        }
+    }
     public String getImageFileNameWall() {
         return ImageFileNameWall.get();
     }
@@ -172,13 +216,36 @@ public class MazeDisplayer extends Canvas {
     public void setImageFileNameCharacter(String imageFileNameCharacter) {
         this.ImageFileNameCharacter.set(imageFileNameCharacter);
     }
+
     public String getImageFilePath() {
         return ImageFilePath.get();
     }
 
     public void setImageFilePath(String imageFilePath) {
-        this.ImageFileNamePath.set(imageFilePath);
+        this.ImageFilePath.set(imageFilePath);
     }
+
+    public void setImageFileNameStart(String imageFileNameStart) {
+        this.ImageFileNameStart.set(imageFileNameStart);
+    }
+    public String getImageFileNameStart() {
+        return ImageFileNameStart.get();
+    }
+
+    public void setImageFileNameEnd(String imageFileNameEnd) {
+        this.ImageFileNameEnd.set(imageFileNameEnd);
+    }
+    public String getImageFileNameEnd() {
+        return ImageFileNameEnd.get();
+    }
+
+    public void setImageFileNameSol(String imageFileNameEnd) {
+        this.ImageFileNameSol.set(imageFileNameEnd);
+    }
+    public String getImageFileNameSol() {
+        return ImageFileNameSol.get();
+    }
+
     //endregion
 
 }

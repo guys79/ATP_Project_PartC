@@ -4,6 +4,7 @@ import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
 import Server.Server;
 import algorithms.mazeGenerators.Maze;
+import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.util.Observable;
@@ -65,5 +66,20 @@ public class MyModel extends Observable implements IModel {
     public boolean IsLegalMove(KeyCode movement)
     {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public void solveMaze() {
+
+    }
+
+    @Override
+    public boolean lastChangeBecauseOfSolve() {
+        return false;
+    }
+
+    @Override
+    public Solution getSolution() {
+        return null;
     }
 }

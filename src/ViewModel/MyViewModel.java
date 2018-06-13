@@ -1,7 +1,9 @@
 package ViewModel;
 
 import Model.IModel;
-import Model.MyModel;
+
+
+import algorithms.search.Solution;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.input.KeyCode;
@@ -48,12 +50,13 @@ public class MyViewModel extends Observable implements Observer {
             characterPositionRow.set(characterPositionRowIndex + "");
             characterPositionColumnIndex = model.getCharacterPositionColumn();
             characterPositionColumn.set(characterPositionColumnIndex + "");
+
             //Stating that we made changes
             setChanged();
             notifyObservers();
         }
     }
-
+    public boolean lastChangeBecauseOfSolve(){return  model.lastChangeBecauseOfSolve();};
     /**
      * This function is responsible to load a maze from the computer
      */
@@ -154,5 +157,15 @@ public class MyViewModel extends Observable implements Observer {
      */
     public void generateMaze(int width, int height) {
         model.generateMaze(width, height);
+    }
+
+    public Solution getSol()
+    {
+        return this.model.getSolution();
+    }
+
+    public void solveMaze()
+    {
+        this.model.solveMaze();
     }
 }
