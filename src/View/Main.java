@@ -26,13 +26,13 @@ public class Main extends Application {
         //--------------
         primaryStage.setTitle("My Application!");
         FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent root = fxmlLoader.load(getClass().getResource("View.fxml").openStream());
+        Parent root = fxmlLoader.load(Main.class.getResource("/View/MyView.fxml"));
         Scene scene = new Scene(root, 800, 700);
         scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
         primaryStage.setScene(scene);
         //--------------
         MyViewController view = fxmlLoader.getController();
-        view.setResizeEvent(scene);
+     //   view.setResizeEvent(scene);
         view.setViewModel(viewModel);
         viewModel.addObserver(view);
         //--------------

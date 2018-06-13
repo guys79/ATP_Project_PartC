@@ -41,7 +41,9 @@ public class MyViewController  implements Observer, IView {
      * @param viewModel - The viewModel
      */
     public void setViewModel(MyViewModel viewModel) {
-        this.viewModel = viewModel;
+        this.viewModel = viewModel;//Set the view model to the given model
+
+        //Binding the labels to the string property in the viewModel
         lbl_rowsNum.textProperty().bind(viewModel.characterPositionRowProperty());
         lbl_columnsNum.textProperty().bind(viewModel.characterPositionColumnProperty());
     }
@@ -51,7 +53,18 @@ public class MyViewController  implements Observer, IView {
      */
     public void displayMaze(int[][] maze)
     {
-        throw new NotImplementedException();
+        mazeDisplayer.setMaze(maze);//Display the maze using the maze displayer (our widget)
+
+        //Get the position of the character
+        int characterPositionRow = viewModel.getIntCharacterPositionRow();
+        int characterPositionColumn =viewModel.getIntCharacterPositionCol();
+
+        //Display the character
+        mazeDisplayer.setCharacterPosition(characterPositionRow, characterPositionColumn);
+
+        //Display the character's location
+        this.characterPositionRow.set(characterPositionRow + "");
+        this.characterPositionColumn.set(characterPositionColumn + "");
     }
 
     /**
@@ -61,7 +74,13 @@ public class MyViewController  implements Observer, IView {
      */
     @Override
     public void update(Observable o, Object arg) {
-        throw new NotImplementedException();
+        //If the observable is our model (right now we don't care about other observables
+        if (o == viewModel) {
+            //Display the maze
+            displayMaze(viewModel.getMaze());
+            //Allow to the user to keep generating maze
+            btn_generateMaze.setDisable(false);
+        }
     }
 
 
@@ -71,7 +90,9 @@ public class MyViewController  implements Observer, IView {
      * @param keyEvent - The key event
      */
     public void KeyPressed(KeyEvent keyEvent) {
-        throw new NotImplementedException();
+        //Tell the modelView that a character was moved
+        this.viewModel.moveCharacter(keyEvent.getCode());
+        keyEvent.consume();
     }
 
 
@@ -80,7 +101,13 @@ public class MyViewController  implements Observer, IView {
      * This function is responsible to generate the maze (or rather, tell the view model to generate the maze)
      */
     public void generateMaze() {
-        throw new NotImplementedException();
+        //Receive the size of the maze
+        int height = Integer.valueOf(txtfld_rowsNum.getText());
+        int width = Integer.valueOf(txtfld_columnsNum.getText());
+        //Until we generate the maze we are not allowing the user to geerate another maze
+        btn_generateMaze.setDisable(true);
+        //Generate the maze
+        viewModel.generateMaze(width, height);
     }
 
 
@@ -142,26 +169,8 @@ public class MyViewController  implements Observer, IView {
         }
     }
 
-/*
 
-    public void setResizeEvent(Scene scene) {
-        long width = 0;
-        long height = 0;
-        scene.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                System.out.println("Width: " + newSceneWidth);
-            }
-        });
-        scene.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-                System.out.println("Height: " + newSceneHeight);
-            }
-        });
-    }
- */
-
+//Has a potential to solve the size problem
 public void setResizeEvent(Scene scene) {
     throw new NotImplementedException();
 }
