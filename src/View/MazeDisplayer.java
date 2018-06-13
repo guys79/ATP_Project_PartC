@@ -27,6 +27,7 @@ public class MazeDisplayer extends Canvas {
     //A default value is defined in the fxml
     private StringProperty ImageFileNameWall = new SimpleStringProperty();
     private StringProperty ImageFileNameCharacter = new SimpleStringProperty();
+    private StringProperty ImageFilePath = new SimpleStringProperty();
 
 
     /**
@@ -74,41 +75,45 @@ public class MazeDisplayer extends Canvas {
         return characterPositionColumn;
     }
 
+    private void nullHandle()
+    {
+        double canvasHeight = getHeight();
+        double canvasWidth = getWidth();
+
+        //Calculate the siz of each  cell in the maze
+        double cellHeight = canvasHeight / maze.length;
+        double cellWidth = canvasWidth / maze[0].length;
+        GraphicsContext gc = getGraphicsContext2D();
+        gc.clearRect(0, 0, getWidth(), getHeight());
+        if (maze == null) {
+            this.maze = new int[10][10];
+
+        }
+        for (int i = 0; i < this.maze.length; i++) {
+            for (int j = 0; j < this.maze[0].length; j++) {
+                if(i==j || i+j==this.maze.length-1)
+                {
+                    gc.setFill(Color.BLACK);
+                }
+                else
+                {
+                    gc.setFill(Color.YELLOW);
+                }
+                gc.fillRect(j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+                this.maze[i][j] = 1;
+
+            }
+        }
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText("The Image of the wall/path/character does not exist");
+        alert.show();
+    }
     /**
-     * This function is responsible to draw the maze with a give data (The fiels of this class)
+     * This function is responsible to draw the maze with the given data (The fields of this class)
      */
     public void redraw() {
-        if (ImageFileNameCharacter.getValue() == null || ImageFileNameWall.getValue() == null) {
-            double canvasHeight = getHeight();
-            double canvasWidth = getWidth();
-
-            //Calculate the siz of each  cell in the maze
-            double cellHeight = canvasHeight / maze.length;
-            double cellWidth = canvasWidth / maze[0].length;
-            GraphicsContext gc = getGraphicsContext2D();
-            gc.clearRect(0, 0, getWidth(), getHeight());
-            if (maze == null) {
-                this.maze = new int[10][10];
-
-            }
-            for (int i = 0; i < this.maze.length; i++) {
-                for (int j = 0; j < this.maze[0].length; j++) {
-                    if(i==j || i+j==this.maze.length-1)
-                    {
-                        gc.setFill(Color.BLACK);
-                    }
-                    else
-                    {
-                        gc.setFill(Color.YELLOW);
-                    }
-                    gc.fillRect(j * cellHeight, i * cellWidth, cellHeight, cellWidth);
-                    this.maze[i][j] = 1;
-
-                }
-            }
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("The Image of the wall or the path does not exist");
-            alert.show();
+        if (ImageFileNameCharacter.getValue() == null || ImageFileNameWall.getValue() == null || ImageFilePath==null) {
+            nullHandle();
         } else {
             //If there is a maze
             if (maze != null) {
@@ -166,6 +171,13 @@ public class MazeDisplayer extends Canvas {
 
     public void setImageFileNameCharacter(String imageFileNameCharacter) {
         this.ImageFileNameCharacter.set(imageFileNameCharacter);
+    }
+    public String getImageFilePath() {
+        return ImageFilePath.get();
+    }
+
+    public void setImageFilePath(String imageFilePath) {
+        this.ImageFileNamePath.set(imageFilePath);
     }
     //endregion
 
