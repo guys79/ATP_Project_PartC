@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="The structure of the project V5">
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ATP_Project_PartC/Model/IModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ATP_Project_PartC/Model/IModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ATP_Project_PartC/Model/MyModel.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ATP_Project_PartC/ViewModel/MyViewModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ATP_Project_PartC/ViewModel/MyViewModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/IModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/IModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/MyModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/MyModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Main.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -71,11 +65,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MyModel.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MyModel.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Model/MyModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-221">
-              <caret line="58" column="40" selection-start-line="58" selection-start-column="40" selection-end-line="58" selection-end-column="40" />
+            <state relative-caret-position="-714">
+              <caret line="71" column="40" selection-start-line="71" selection-start-column="40" selection-end-line="71" selection-end-column="40" />
               <folding>
                 <element signature="e#7558#7559#0" expanded="true" />
                 <element signature="e#7606#7607#0" expanded="true" />
@@ -90,6 +84,11 @@
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.properties" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/config.properties">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file leaf-file-name="Maze.class" pinned="false" current-in-tab="false">
@@ -285,7 +284,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="dynamic.classpath" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ATP2017---Project---PartA" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -550,7 +549,7 @@
       <workItem from="1528888064146" duration="1841000" />
       <workItem from="1528890078233" duration="7358000" />
       <workItem from="1528909074702" duration="6004000" />
-      <workItem from="1528920968695" duration="18453000" />
+      <workItem from="1528920968695" duration="19544000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <created>1528808393324</created>
@@ -580,11 +579,25 @@
       <option name="project" value="LOCAL" />
       <updated>1528809761119</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="The structure of the project V5">
+      <created>1528940127708</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1528940127708</updated>
+    </task>
+    <task id="LOCAL-00006" summary="The structure of the project V8">
+      <created>1528940190434</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1528940190434</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46838000" />
+    <option name="totallyTimeSpent" value="47929000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -599,7 +612,7 @@
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.2678002" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.2678002" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info id="Capture Tool" order="2" />
@@ -677,23 +690,17 @@
     <MESSAGE value="The structure of the project V3" />
     <MESSAGE value="The structure of the project V4" />
     <MESSAGE value="The structure of the project V5" />
-    <option name="LAST_COMMIT_MESSAGE" value="The structure of the project V5" />
+    <MESSAGE value="The structure of the project V8" />
+    <MESSAGE value="The structure of the project V7" />
+    <MESSAGE value="The structure of" />
+    <MESSAGE value="The structure of1" />
+    <option name="LAST_COMMIT_MESSAGE" value="The structure of1" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/View/MyViewController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1054">
-          <caret line="62" column="27" lean-forward="true" selection-start-line="62" selection-start-column="27" selection-end-line="62" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="578">
@@ -1118,8 +1125,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Model/MyModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-221">
-          <caret line="58" column="40" selection-start-line="58" selection-start-column="40" selection-end-line="58" selection-end-column="40" />
+        <state relative-caret-position="-714">
+          <caret line="71" column="40" selection-start-line="71" selection-start-column="40" selection-end-line="71" selection-end-column="40" />
           <folding>
             <element signature="e#7558#7559#0" expanded="true" />
             <element signature="e#7606#7607#0" expanded="true" />
@@ -1134,6 +1141,9 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.properties">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
   <component name="masterDetails">
