@@ -324,7 +324,7 @@ public class MyViewController  implements Observer, IView {
         if (searchingAlgorhithm.equals("brfs")) {
             search = new BreadthFirstSearch();
         }
-        }
+
     }
 
 
