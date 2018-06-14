@@ -51,10 +51,9 @@ public interface IModel {
      */
     public boolean IsLegalMove(KeyCode movement);
 
-    public void solveMaze();
-
-    public boolean lastChangeBecauseOfSolve();
+    public Solution solveMaze();
 
     public Solution getSolution();
 
+    public boolean lastChangeBecauseOfSolve();
 }
