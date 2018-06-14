@@ -46,8 +46,8 @@
                         </children>
                     </TilePane>
                     <Button cancelButton="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                    <Label text="Char row:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <Label text="Char column:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <Label fx:id="presentRow" text="Char row:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label fx:id="presentCol" text="Char column:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                     <Label fx:id="lbl_rowsNum" text="${controller.characterPositionRow}" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     <Label fx:id="lbl_columnsNum" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
@@ -105,7 +105,7 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="600.0"  imageFilePath="src/resources/Images/path1.jpg" imageFileNameCharacter="src/resources/Images/character1.jpg" imageFileNameWall="src/resources/Images/wall4.jpg" width="600.0" />
+                <MazeDisplayer fx:id="mazeDisplayer" height="600.0" imageFileNameWin="src/resources/Images/classic/win.jpg" imageFileNameSol="src/resources/Images/classic/sol.jpg" imageFileNameStart="src/resources/Images/classic/startClassic.png" imageFileNameEnd="src/resources/Images/classic/endClassic.jpg" imageFilePath="src/resources/Images/classic/path1.jpg" imageFileNameCharacter="src/resources/Images/classic/character1.jpg" imageFileNameWall="src/resources/Images/classic/wall4.jpg" width="600.0" />
             </children>
         </Pane>
     </center>

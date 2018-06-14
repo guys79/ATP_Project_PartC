@@ -9,6 +9,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -36,6 +37,7 @@ public class MazeDisplayer extends Canvas {
     private StringProperty ImageFileNameStart = new SimpleStringProperty();
     private StringProperty ImageFileNameEnd = new SimpleStringProperty();
     private StringProperty ImageFileNameSol = new SimpleStringProperty();
+    private StringProperty ImageFileNameWin = new SimpleStringProperty();
     private boolean isPathImageExist=true;
 
 
@@ -135,10 +137,11 @@ public class MazeDisplayer extends Canvas {
 
                 ImageFileNameEnd.setValue(ImageFilePath.getValue());
 
+
             }
             //If there is a maze
             if (maze != null) {
-                System.out.println("REDRAW STARTED");
+
                 //Get the size of the canvas
                 double canvasHeight = getHeight();
                 double canvasWidth = getWidth();
@@ -151,14 +154,16 @@ public class MazeDisplayer extends Canvas {
                     //Getting the images
 
                     Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
+                    System.out.println(ImageFileNameWall.getValue());
                     Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
                     Image end = new Image(new FileInputStream(ImageFileNameEnd.get()));
+                    Image start = new Image(new FileInputStream(ImageFileNameStart.get()));
 
                     Image pathImage=null;
                     if(this.isPathImageExist)
                     {
                     pathImage = new Image(new FileInputStream(ImageFilePath.get()));}
-                    System.out.println(ImageFilePath.get());
+
 
                     //Create the maze structure
                     GraphicsContext gc = getGraphicsContext2D();
@@ -177,12 +182,18 @@ public class MazeDisplayer extends Canvas {
                             {
                                 if(maze[i][j]==3)
                                 {
-                                    System.out.println("guyggg");
+
                                     gc.drawImage(end, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
                                 }
-                                if(this.ImageFilePath.getValue()!=null && isPathImageExist) {
-                                    System.out.println("??????????");
-                                    gc.drawImage(pathImage, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+                                else {
+                                    if (maze[i][j] == 2) {
+                                        gc.drawImage(start, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+                                    } else {
+                                        if (this.ImageFilePath.getValue() != null && isPathImageExist) {
+
+                                            gc.drawImage(pathImage, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -191,14 +202,14 @@ public class MazeDisplayer extends Canvas {
 
 
 
-                    System.out.println();
+
 
                     //Draw the character
                     gc.drawImage(characterImage, characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
                 } catch (FileNotFoundException e) {
                     /**print alert?*/
                     e.printStackTrace();
-                    System.out.println("??????????ss;dkd;ak;askda??");
+
                 }
             }
         }
@@ -219,16 +230,49 @@ public class MazeDisplayer extends Canvas {
             j = 0;
         ArrayList<AState> path = sol.getSolutionPath();
         GraphicsContext gc = getGraphicsContext2D();
+
         String imgSol = this.ImageFileNameSol.getValue();
         if (imgSol == null) {
             gc.setFill(Color.GOLD);
             for (; i < path.size() - j; i++) {
-                gc.fillRect(((MazeState) path.get(i)).getCurrentPosition().GetRowIndex() * cellHeight, ((MazeState) path.get(i)).getCurrentPosition().GetColumnIndex() * cellWidth, cellHeight, cellWidth);
+                gc.fillRect(((MazeState) path.get(i)).getCurrentPosition().GetColumnIndex() * cellHeight, ((MazeState) path.get(i)).getCurrentPosition().GetRowIndex() * cellWidth, cellHeight, cellWidth);
             }
         }
         else
         {
-            throw  new NotImplementedException();
+            Image solImg=null;
+            try {
+                solImg = new Image(new FileInputStream(this.ImageFileNameSol.get()));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            for (; i < path.size() - j; i++) {
+                gc.drawImage(solImg,((MazeState) path.get(i)).getCurrentPosition().GetColumnIndex() * cellHeight, ((MazeState) path.get(i)).getCurrentPosition().GetRowIndex() * cellWidth, cellHeight, cellWidth);
+            }
+        }
+
+    }
+
+    public void win()
+    {
+        GraphicsContext gc = getGraphicsContext2D();
+
+        if(ImageFileNameWin.getValue()==null)
+        {
+            gc.setFill(Color.BLUE);
+            gc.fillRect(0,0,getHeight(),getWidth());
+        }
+        else
+        {
+            try {
+                Image winImg = new Image(new FileInputStream(this.ImageFileNameWin.get()));
+
+                gc.drawImage(winImg,0,0,getHeight(),getWidth());
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
     public String getImageFileNameWall() {
@@ -255,7 +299,7 @@ public class MazeDisplayer extends Canvas {
         this.ImageFilePath.set(imageFilePath);
         if(this.ImageFilePath.getValue().toString().equals("EMPTY"))
         {
-            System.out.println("EMPTY");
+
             this.isPathImageExist=false;
         }
         else
@@ -278,11 +322,18 @@ public class MazeDisplayer extends Canvas {
         return ImageFileNameEnd.get();
     }
 
-    public void setImageFileNameSol(String imageFileNameEnd) {
-        this.ImageFileNameSol.set(imageFileNameEnd);
+    public void setImageFileNameSol(String imageFileNameSol) {
+        this.ImageFileNameSol.set(imageFileNameSol);
     }
     public String getImageFileNameSol() {
         return ImageFileNameSol.get();
+    }
+
+    public void setImageFileNameWin(String imageFileNameWin) {
+        this.ImageFileNameWin.set(imageFileNameWin);
+    }
+    public String getImageFileNameWin() {
+        return ImageFileNameWin.get();
     }
 
     //endregion

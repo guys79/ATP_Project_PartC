@@ -168,4 +168,8 @@ public class MyViewModel extends Observable implements Observer {
     {
         this.model.solveMaze();
     }
+
+    public boolean win(){
+        return this.model.win();
+    }
 }

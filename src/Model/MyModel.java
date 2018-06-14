@@ -298,6 +298,11 @@ public class MyModel extends Observable implements IModel {
         this.fromFile(path);
     }
 
+    @Override
+    public boolean win() {
+        return this.myMaze.getGoalPosition().GetRowIndex()==this.characterPositionRowIndex && this.myMaze.getGoalPosition().GetColumnIndex()==this.characterPositionColumnIndex;
+    }
+
     public Solution getSolution(){
         return solution;
     }

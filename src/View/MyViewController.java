@@ -16,6 +16,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
@@ -23,7 +25,10 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -37,6 +42,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 
 /**
  * This class will represent our view.
@@ -52,9 +58,10 @@ public class MyViewController  implements Observer, IView {
     public javafx.scene.control.TextField txtfld_columnsNum;
     public javafx.scene.control.Label lbl_rowsNum;
     public javafx.scene.control.Label lbl_columnsNum;
+    public javafx.scene.control.Label presentCol;
+    public javafx.scene.control.Label presentRow;
     public javafx.scene.control.Button btn_generateMaze;
-    private JTextField filename = new JTextField();
-    private JTextField dir = new JTextField();
+
     public BorderPane BorderPaneId;
     //The string the we bind
     private StringProperty characterPositionRow = new SimpleStringProperty();
@@ -91,10 +98,7 @@ public class MyViewController  implements Observer, IView {
         this.characterPositionRow.set(characterPositionRow + "");
         this.characterPositionColumn.set(characterPositionColumn + "");
 
-        if(this.viewModel.lastChangeBecauseOfSolve())
-        {
-            this.mazeDisplayer.drawSolution(this.viewModel.getSol());
-        }
+
     }
 
     public void solveMaze(){
@@ -129,7 +133,17 @@ public class MyViewController  implements Observer, IView {
             //Display the maze
             displayMaze(viewModel.getMaze());
             //Allow to the user to keep generating maze
-
+            if(this.viewModel.win())
+            {
+                Alert alert=new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("WINER!!!");
+                alert.show();
+                mazeDisplayer.win();
+            }
+            if(this.viewModel.lastChangeBecauseOfSolve())
+            {
+                this.mazeDisplayer.drawSolution(this.viewModel.getSol());
+            }
             btn_generateMaze.setDisable(false);
         }
     }
@@ -230,7 +244,15 @@ public class MyViewController  implements Observer, IView {
         FileChooser fileChooser=new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text doc(*.maze)", "*.maze"));
         File file = fileChooser.showOpenDialog(primaryStage);
-        System.out.println(file.getAbsolutePath());
+        if(file==null)
+            return;
+        if(file.getAbsolutePath().length()<=5 || !file.getAbsolutePath().substring(file.getAbsolutePath().length()-4).equals(".maze"))
+        {
+            Alert unvalidFile=new Alert(Alert.AlertType.ERROR);
+            unvalidFile.setContentText("Unvalid file");
+            unvalidFile.showAndWait();
+            return;
+        }
         this.viewModel.loadMaze(file.getAbsolutePath());
     }
 
@@ -245,7 +267,8 @@ public class MyViewController  implements Observer, IView {
         FileChooser fileChooser=new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text doc(*.maze)", "*.maze"));
         File file = fileChooser.showSaveDialog(primaryStage);
-        System.out.println(file.getAbsolutePath());
+        if(file==null)
+            return;
         this.viewModel.saveMaze(file.getAbsolutePath());
 
 
@@ -262,6 +285,27 @@ public class MyViewController  implements Observer, IView {
 
     }
 
+    public void anotherGame()
+    {
+
+            Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Do you want to play another game?");
+            ButtonType yes=new ButtonType("Yes!");
+            ButtonType no=new ButtonType("No");
+            alert.getButtonTypes().setAll(yes,no);
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.get()==no)
+            {
+                Alert funnyAlert=new Alert(Alert.AlertType.INFORMATION);
+                funnyAlert.setContentText("I don't really care... I'll generate another one for you XD");
+                funnyAlert.showAndWait();
+            }
+            this.generateMaze();
+
+
+
+
+    }
     @FXML
     /**
      * This function will change the style of the maze
@@ -271,12 +315,43 @@ public class MyViewController  implements Observer, IView {
         //Receiving the kind of style that the user wants
         javafx.scene.control.MenuItem node = (javafx.scene.control.MenuItem) event.getSource() ;
         String data =  (String)node.getUserData();
+        if(this.viewModel.win())
+        {
+            anotherGame();
+        }
 
         //In each case we will select differently
         switch (data) {
             case "classic":
             {
 
+                BorderPaneId.setStyle("-fx-background-color: bisque");
+                mazeDisplayer.setImageFileNameCharacter("src\\resources\\Images\\classic\\character1.jpg");
+                mazeDisplayer.setImageFileNameEnd("src\\resources\\Images\\classic\\endClassic.jpg");
+                mazeDisplayer.setImageFileNameWall("src\\resources\\Images\\classic\\wall4.jpg");
+                mazeDisplayer.setImageFileNameStart("src\\resources\\Images\\classic\\startClassic.png");
+                mazeDisplayer.setImageFilePath("src\\resources\\Images\\classic\\path1.jpg");
+                mazeDisplayer.setImageFileNameSol("src\\resources\\Images\\classic\\sol.jpg");
+                mazeDisplayer.setImageFileNameWin("src\\resources\\Images\\classic\\win.jpg");
+
+                lbl_columnsNum.setStyle("-fx-background-color: bisque");
+                presentCol.setStyle("-fx-background-color: bisque");
+                presentRow.setStyle("-fx-background-color: bisque");
+                lbl_rowsNum.setStyle("-fx-background-color: bisque");
+
+
+                lbl_columnsNum.setTextFill(Color.BLACK);
+                lbl_rowsNum.setTextFill(Color.BLACK);
+                lbl_columnsNum.setFont(Font.font("Vardana",FontWeight.NORMAL,12));
+                lbl_rowsNum.setFont(Font.font("Vardana",FontWeight.NORMAL,12));
+
+                presentRow.setTextFill(Color.BLACK);
+                presentCol.setTextFill(Color.BLACK);
+                presentRow.setFont(Font.font("Vardana",FontWeight.NORMAL,12));
+                presentCol.setFont(Font.font("Vardana",FontWeight.NORMAL,12));
+
+
+                break;
             }
             case "Irish":
             {
@@ -285,17 +360,35 @@ public class MyViewController  implements Observer, IView {
                 mazeDisplayer.setImageFileNameCharacter("src\\resources\\Images\\leprekon\\character.jpg");
                 mazeDisplayer.setImageFileNameEnd("src\\resources\\Images\\leprekon\\end.jpg");
                 mazeDisplayer.setImageFileNameWall("src\\resources\\Images\\leprekon\\wall.jpg");
-               mazeDisplayer.setImageFilePath("EMPTY");
+                mazeDisplayer.setImageFileNameStart("src\\resources\\Images\\leprekon\\leprekonStart.jpg");
+                mazeDisplayer.setImageFilePath("src\\resources\\Images\\leprekon\\path.jpg");
+                mazeDisplayer.setImageFileNameSol("src\\resources\\Images\\leprekon\\sol.jpg");
+                mazeDisplayer.setImageFileNameWin("src\\resources\\Images\\leprekon\\win.jpg");
+                lbl_columnsNum.setStyle("-fx-background-color: black");
+                lbl_rowsNum.setStyle("-fx-background-color: black");
+                presentCol.setStyle("-fx-background-color: black");
+                presentRow.setStyle("-fx-background-color: black");
 
-                mazeDisplayer.redraw();
+                lbl_columnsNum.setTextFill(Color.RED);
+                lbl_rowsNum.setTextFill(Color.RED);
+                lbl_columnsNum.setFont(Font.font("Vardana",FontWeight.BOLD,12));
+                lbl_rowsNum.setFont(Font.font("Vardana",FontWeight.BOLD,12));
+
+                presentRow.setTextFill(Color.RED);
+                presentCol.setTextFill(Color.RED);
+                presentRow.setFont(Font.font("Vardana",FontWeight.BOLD,12));
+                presentCol.setFont(Font.font("Vardana",FontWeight.BOLD,12));
+
+                break;
+
             }
             case "style2":
             {
-
+                break;
             }
 
         }
-
+        mazeDisplayer.redraw();
     }
 
 //Has a potential to solve the size problem
@@ -307,5 +400,6 @@ public void setPrimaryStage(Stage primaryStage)
 {
     this.primaryStage=primaryStage;
 }
+
 
 }
