@@ -308,7 +308,7 @@ public class MyViewController  implements Observer, IView {
     }
     @FXML
     /**
-     * This function will change the style of the maze
+     * this function will give the user to choose what algorithm to use
      */
     public void setAlgorithm(String searchingAlgorhithm){
         if (searchingAlgorhithm.equals("bfs")) {
@@ -322,10 +322,11 @@ public class MyViewController  implements Observer, IView {
         if (searchingAlgorhithm.equals("brfs")) {
             Server.configurations.set("ASearchingAlgorithm", "brfs");
         }
-
     }
 
-
+    /**
+     * This function will change the style of the maze
+     */
     public void changeStyle(ActionEvent event)
     {
         //Receiving the kind of style that the user wants
