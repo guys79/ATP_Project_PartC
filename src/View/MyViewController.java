@@ -310,19 +310,17 @@ public class MyViewController  implements Observer, IView {
     /**
      * This function will change the style of the maze
      */
-    public void setAlgorithm(){
-        ASearchingAlgorithm search = null;
-        String searchingAlgorhithm = Server.configurations.get("ASearchingAlgorithm");
+    public void setAlgorithm(String searchingAlgorhithm){
         if (searchingAlgorhithm.equals("bfs")) {
-            search = new BestFirstSearch();
+            Server.configurations.set("ASearchingAlgorithm", "bfs");
         }
 
         if (searchingAlgorhithm.equals("dfs")) {
-            search = new DepthFirstSearch();
+            Server.configurations.set("ASearchingAlgorithm", "dfs");
         }
 
         if (searchingAlgorhithm.equals("brfs")) {
-            search = new BreadthFirstSearch();
+            Server.configurations.set("ASearchingAlgorithm", "brfs");
         }
 
     }
