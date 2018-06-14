@@ -60,17 +60,17 @@ public class MyViewModel extends Observable implements Observer {
     /**
      * This function is responsible to load a maze from the computer
      */
-    public void loadMaze()
+    public void loadMaze(String path)
     {
-        throw new NotImplementedException();
+        this.model.loadMaze(path);
     }
 
     /**
      * This function is responsible to save a maze on the computer
      */
-    public void saveMaze()
+    public void saveMaze(String path)
     {
-        throw new NotImplementedException();
+        this.model.saveMaze(path);
     }
 
 

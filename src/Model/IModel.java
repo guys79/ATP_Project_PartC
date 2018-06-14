@@ -56,4 +56,7 @@ public interface IModel {
     public Solution getSolution();
 
     public boolean lastChangeBecauseOfSolve();
+
+    public void saveMaze(String path);
+    public void loadMaze(String path);
 }

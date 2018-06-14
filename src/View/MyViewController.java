@@ -225,12 +225,13 @@ public class MyViewController  implements Observer, IView {
      */
     public void loadMaze()
     {
-        //this.viewModel.loadMaze();
+
         //Receiving the path and than creating actual file there
         FileChooser fileChooser=new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text doc(*.maze)", "*.maze"));
         File file = fileChooser.showOpenDialog(primaryStage);
         System.out.println(file.getAbsolutePath());
+        this.viewModel.loadMaze(file.getAbsolutePath());
     }
 
     /**
@@ -238,13 +239,14 @@ public class MyViewController  implements Observer, IView {
      */
     public void saveMaze()
     {
-        this.viewModel.saveMaze();
 
-        /* Receiving the path and than creating actual file there
+
+        //Receiving the path and than creating actual file there
         FileChooser fileChooser=new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text doc(*.maze)", "*.maze"));
         File file = fileChooser.showSaveDialog(primaryStage);
-        System.out.println(file.getAbsolutePath());*/
+        System.out.println(file.getAbsolutePath());
+        this.viewModel.saveMaze(file.getAbsolutePath());
 
 
     }

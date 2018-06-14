@@ -87,6 +87,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 sc.nextLine();
             }
+            //DAFAQ???
             Position start= myMaze.getStartPosition();
             Position end= myMaze.getGoalPosition();
             myMaze= new Maze(temp,start,end);
@@ -281,6 +282,16 @@ public class MyModel extends Observable implements IModel {
     @Override
     public boolean lastChangeBecauseOfSolve() {
         return this.changeCause;
+    }
+
+    @Override
+    public void saveMaze(String path) {
+        this.toFile(path);
+    }
+
+    @Override
+    public void loadMaze(String path) {
+        this.fromFile(path);
     }
 
     public Solution getSolution(){
