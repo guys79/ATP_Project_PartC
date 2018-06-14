@@ -53,6 +53,10 @@ public class MyModel extends Observable implements IModel {
             writer = new PrintWriter(filePath, "UTF-8");
             writer.println(characterPositionRowIndex);
             writer.println(characterPositionColumnIndex);
+            writer.println(myMaze.getStartPosition().GetRowIndex());
+            writer.println(myMaze.getStartPosition().GetColumnIndex());
+            writer.println(myMaze.getGoalPosition().GetRowIndex());
+            writer.println(myMaze.getGoalPosition().GetColumnIndex());
             writer.println(height);
             writer.println(width);
             int [][] maze=myMaze.geMaze();
@@ -68,8 +72,7 @@ public class MyModel extends Observable implements IModel {
         } catch (UnsupportedEncodingException var13) {
             var13.printStackTrace();
         }
-        setChanged();
-        notifyObservers();
+
     }
     private void fromFile(String filePath){
         try {
@@ -78,6 +81,8 @@ public class MyModel extends Observable implements IModel {
             Scanner sc = new Scanner(file);
             characterPositionRowIndex=Integer.parseInt(sc.nextLine());
             characterPositionColumnIndex=Integer.parseInt(sc.nextLine());
+            Position start= new Position(Integer.parseInt(sc.nextLine()),Integer.parseInt(sc.nextLine()));
+            Position end= new Position(Integer.parseInt(sc.nextLine()),Integer.parseInt(sc.nextLine()));
             int numOfRows=Integer.parseInt(sc.nextLine());
             int numOfColumns=Integer.parseInt(sc.nextLine());
             int [][] temp= new int[numOfRows][numOfColumns];
@@ -88,8 +93,7 @@ public class MyModel extends Observable implements IModel {
                 sc.nextLine();
             }
             //DAFAQ???
-            Position start= myMaze.getStartPosition();
-            Position end= myMaze.getGoalPosition();
+
             myMaze= new Maze(temp,start,end);
         }
         catch (FileNotFoundException var12) {
@@ -212,7 +216,7 @@ public class MyModel extends Observable implements IModel {
         int[][]maze=myMaze.geMaze();
         maze[myMaze.getStartPosition().GetRowIndex()][myMaze.getStartPosition().GetColumnIndex()]=2;
         maze[myMaze.getGoalPosition().GetRowIndex()][myMaze.getGoalPosition().GetColumnIndex()]=3;
-        return myMaze.geMaze();
+        return maze;
     }
 
     /**

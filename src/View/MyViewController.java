@@ -98,8 +98,8 @@ public class MyViewController  implements Observer, IView {
     }
 
     public void solveMaze(){
-     /*   this.viewModel.solveMaze();
-        ArrayList<AState> path=new ArrayList<>();
+        this.viewModel.solveMaze();
+     /*   ArrayList<AState> path=new ArrayList<>();
         path.add(new MazeState(new Position(1,1)));
         path.add(new MazeState(new Position(2,1)));
         path.add(new MazeState(new Position(3,1)));

@@ -152,6 +152,8 @@ public class MazeDisplayer extends Canvas {
 
                     Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
                     Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
+                    Image end = new Image(new FileInputStream(ImageFileNameEnd.get()));
+
                     Image pathImage=null;
                     if(this.isPathImageExist)
                     {
@@ -173,6 +175,11 @@ public class MazeDisplayer extends Canvas {
                             }
                             else
                             {
+                                if(maze[i][j]==3)
+                                {
+                                    System.out.println("guyggg");
+                                    gc.drawImage(end, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+                                }
                                 if(this.ImageFilePath.getValue()!=null && isPathImageExist) {
                                     System.out.println("??????????");
                                     gc.drawImage(pathImage, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
@@ -181,6 +188,7 @@ public class MazeDisplayer extends Canvas {
                         }
 
                     }
+
 
 
                     System.out.println();
