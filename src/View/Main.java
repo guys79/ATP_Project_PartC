@@ -1,6 +1,7 @@
 package View;
 
 import Model.*;
+import Server.Initialize;
 import ViewModel.MyViewModel;
 
 import javafx.application.Application;
@@ -20,8 +21,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
        // MyModel model = new MyModel();
-        Model model=new Model();
-        model.startServers();
+        Initialize.init();
+        MyModel model=new MyModel();
+        model.mazeGeneratingServer.start();
+        model.solveSearchProblemServer.start();
        // model.startServers();
         MyViewModel viewModel = new MyViewModel(model);
         model.addObserver(viewModel);
