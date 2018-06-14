@@ -46,11 +46,7 @@ public class MyModel extends Observable implements IModel {
     private int characterPositionColumnIndex;//The column index of the character's position
     Solution solution;
 
-    /**
-     * This function will generate a new maze
-     * @param width - The width of the maze
-     * @param height - The height of the maze
-     */
+
     private void toFile(String filePath){
         PrintWriter writer = null;
         try {
@@ -102,7 +98,11 @@ public class MyModel extends Observable implements IModel {
         notifyObservers();
     }
 
-
+    /**
+     * This function will generate a new maze
+     * @param width - The width of the maze
+     * @param height - The height of the maze
+     */
     public void generateMaze(int width, int height)
     {
         this.width=width;
