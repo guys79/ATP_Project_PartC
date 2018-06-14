@@ -82,7 +82,7 @@
                                 <Menu mnemonicParsing="false" text="Change Style">
                                     <items>
                               <MenuItem mnemonicParsing="false" text="Classic" onAction="#changeStyle" userData="classic"/>
-                                        <MenuItem mnemonicParsing="false" text="Style 1" onAction="#changeStyle" userData="style1"/>
+                                        <MenuItem mnemonicParsing="false" text="Irish Mode" onAction="#changeStyle" userData="Irish"/>
                               <MenuItem mnemonicParsing="false" text="Style 2" onAction="#changeStyle" userData="style2"/>
                                     </items>
                                 </Menu>
@@ -105,7 +105,7 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="600.0"  imageFilePath="resources/Images/path1.jpg" imageFileNameCharacter="resources/Images/character1.jpg" imageFileNameWall="resources/Images/wall4.jpg" width="600.0" />
+                <MazeDisplayer fx:id="mazeDisplayer" height="600.0"  imageFilePath="src/resources/Images/path1.jpg" imageFileNameCharacter="src/resources/Images/character1.jpg" imageFileNameWall="src/resources/Images/wall4.jpg" width="600.0" />
             </children>
         </Pane>
     </center>

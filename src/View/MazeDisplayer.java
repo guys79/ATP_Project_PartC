@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 import java.io.FileInputStream;
@@ -35,7 +36,7 @@ public class MazeDisplayer extends Canvas {
     private StringProperty ImageFileNameStart = new SimpleStringProperty();
     private StringProperty ImageFileNameEnd = new SimpleStringProperty();
     private StringProperty ImageFileNameSol = new SimpleStringProperty();
-
+    private boolean isPathImageExist=true;
 
 
 
@@ -114,7 +115,7 @@ public class MazeDisplayer extends Canvas {
             }
         }
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setContentText("The Image of the wall/path/character does not exist");
+        alert.setContentText("The Image of the wall/character does not exist");
         alert.show();
     }
     /**
@@ -122,11 +123,13 @@ public class MazeDisplayer extends Canvas {
      */
     public void redraw() {
 
-        if (ImageFileNameCharacter.getValue() == null || ImageFileNameWall.getValue() == null || ImageFilePath==null) {
+        if (ImageFileNameCharacter.getValue() == null || ImageFileNameWall.getValue() == null) {
             nullHandle();
         } else {
-            if(ImageFileNameStart.getValue()==null)
+            if(ImageFileNameStart.getValue()==null) {
+
                 ImageFileNameStart.setValue(ImageFilePath.getValue());
+            }
             if(ImageFileNameEnd.getValue()==null)
             {
 
@@ -135,7 +138,7 @@ public class MazeDisplayer extends Canvas {
             }
             //If there is a maze
             if (maze != null) {
-
+                System.out.println("REDRAW STARTED");
                 //Get the size of the canvas
                 double canvasHeight = getHeight();
                 double canvasWidth = getWidth();
@@ -146,13 +149,19 @@ public class MazeDisplayer extends Canvas {
 
                 try {
                     //Getting the images
+
                     Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
                     Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
-                    Image pathImage = new Image(new FileInputStream(ImageFilePath.get()));
+                    Image pathImage=null;
+                    if(this.isPathImageExist)
+                    {
+                    pathImage = new Image(new FileInputStream(ImageFilePath.get()));}
+                    System.out.println(ImageFilePath.get());
 
                     //Create the maze structure
                     GraphicsContext gc = getGraphicsContext2D();
                     gc.clearRect(0, 0, getWidth(), getHeight());
+
 
                     //Draw the maze
                     for (int i = 0; i < maze.length; i++) {
@@ -164,41 +173,54 @@ public class MazeDisplayer extends Canvas {
                             }
                             else
                             {
-                                gc.drawImage(pathImage, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+                                if(this.ImageFilePath.getValue()!=null && isPathImageExist) {
+                                    System.out.println("??????????");
+                                    gc.drawImage(pathImage, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+                                }
                             }
                         }
 
                     }
+
+
                     System.out.println();
 
                     //Draw the character
                     gc.drawImage(characterImage, characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
                 } catch (FileNotFoundException e) {
                     /**print alert?*/
+                    e.printStackTrace();
+                    System.out.println("??????????ss;dkd;ak;askda??");
                 }
             }
         }
     }
 
-    public void drawSolution(Solution sol)
-    {   double canvasHeight = getHeight();
+    public void drawSolution(Solution sol) {
+        double canvasHeight = getHeight();
         double canvasWidth = getWidth();
 
         //Calculate the size of each  cell in the maze
         double cellHeight = canvasHeight / maze.length;
         double cellWidth = canvasWidth / maze[0].length;
-        int i=1;
-        if(this.getImageFileNameStart().equals(this.getImageFilePath()))
-            i=0;
-        int j=1;
-        if(this.getImageFileNameEnd().equals(this.getImageFilePath()))
-            j=0;
-        ArrayList<AState> path=sol.getSolutionPath();
+        int i = 1;
+        if (this.getImageFileNameStart() == null || this.getImageFileNameStart().equals(this.getImageFilePath()))
+            i = 0;
+        int j = 1;
+        if (this.getImageFileNameEnd() == null || this.getImageFileNameEnd().equals(this.getImageFilePath()))
+            j = 0;
+        ArrayList<AState> path = sol.getSolutionPath();
         GraphicsContext gc = getGraphicsContext2D();
-        gc.setFill(Color.GOLD);
-        for(;i<path.size()-j;i++)
+        String imgSol = this.ImageFileNameSol.getValue();
+        if (imgSol == null) {
+            gc.setFill(Color.GOLD);
+            for (; i < path.size() - j; i++) {
+                gc.fillRect(((MazeState) path.get(i)).getCurrentPosition().GetRowIndex() * cellHeight, ((MazeState) path.get(i)).getCurrentPosition().GetColumnIndex() * cellWidth, cellHeight, cellWidth);
+            }
+        }
+        else
         {
-            gc.fillRect(((MazeState)path.get(i)).getCurrentPosition().GetRowIndex() * cellHeight, ((MazeState)path.get(i)).getCurrentPosition().GetColumnIndex() * cellWidth, cellHeight, cellWidth);
+            throw  new NotImplementedException();
         }
     }
     public String getImageFileNameWall() {
@@ -223,6 +245,15 @@ public class MazeDisplayer extends Canvas {
 
     public void setImageFilePath(String imageFilePath) {
         this.ImageFilePath.set(imageFilePath);
+        if(this.ImageFilePath.getValue().toString().equals("EMPTY"))
+        {
+            System.out.println("EMPTY");
+            this.isPathImageExist=false;
+        }
+        else
+        {
+            this.isPathImageExist=true;
+        }
     }
 
     public void setImageFileNameStart(String imageFileNameStart) {

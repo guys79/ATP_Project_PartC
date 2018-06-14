@@ -11,15 +11,29 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Menu;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.ImagePattern;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -39,8 +53,9 @@ public class MyViewController  implements Observer, IView {
     public javafx.scene.control.Label lbl_rowsNum;
     public javafx.scene.control.Label lbl_columnsNum;
     public javafx.scene.control.Button btn_generateMaze;
-
-
+    private JTextField filename = new JTextField();
+    private JTextField dir = new JTextField();
+    public BorderPane BorderPaneId;
     //The string the we bind
     private StringProperty characterPositionRow = new SimpleStringProperty();
     private StringProperty characterPositionColumn = new SimpleStringProperty();
@@ -83,7 +98,7 @@ public class MyViewController  implements Observer, IView {
     }
 
     public void solveMaze(){
-     //   this.viewModel.solveMaze();
+     /*   this.viewModel.solveMaze();
         ArrayList<AState> path=new ArrayList<>();
         path.add(new MazeState(new Position(1,1)));
         path.add(new MazeState(new Position(2,1)));
@@ -98,6 +113,7 @@ public class MyViewController  implements Observer, IView {
 
         Solution sol=new Solution(path);
         mazeDisplayer.drawSolution(sol);
+        */
     }
 
     /**
@@ -139,7 +155,7 @@ public class MyViewController  implements Observer, IView {
         //Receive the size of the maze
         int height = Integer.valueOf(txtfld_rowsNum.getText());
         int width = Integer.valueOf(txtfld_columnsNum.getText());
-        //Until we generate the maze we are not allowing the user to geerate another maze
+        //Until we generate the maze we are not allowing the user to generate another maze
         btn_generateMaze.setDisable(true);
         //Generate the maze
         viewModel.generateMaze(width, height);
@@ -209,7 +225,12 @@ public class MyViewController  implements Observer, IView {
      */
     public void loadMaze()
     {
-        this.viewModel.loadMaze();
+        //this.viewModel.loadMaze();
+        //Receiving the path and than creating actual file there
+        FileChooser fileChooser=new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text doc(*.maze)", "*.maze"));
+        File file = fileChooser.showOpenDialog(primaryStage);
+        System.out.println(file.getAbsolutePath());
     }
 
     /**
@@ -218,7 +239,16 @@ public class MyViewController  implements Observer, IView {
     public void saveMaze()
     {
         this.viewModel.saveMaze();
+
+        /* Receiving the path and than creating actual file there
+        FileChooser fileChooser=new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text doc(*.maze)", "*.maze"));
+        File file = fileChooser.showSaveDialog(primaryStage);
+        System.out.println(file.getAbsolutePath());*/
+
+
     }
+
 
     /**
      * This function is responsible to exit the app
@@ -237,8 +267,8 @@ public class MyViewController  implements Observer, IView {
     public void changeStyle(ActionEvent event)
     {
         //Receiving the kind of style that the user wants
-        Node node = (Node) event.getSource() ;
-        String data = (String) node.getUserData();
+        javafx.scene.control.MenuItem node = (javafx.scene.control.MenuItem) event.getSource() ;
+        String data =  (String)node.getUserData();
 
         //In each case we will select differently
         switch (data) {
@@ -246,9 +276,16 @@ public class MyViewController  implements Observer, IView {
             {
 
             }
-            case "style1":
+            case "Irish":
             {
 
+                BorderPaneId.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("resources/Images/leprekon/LeprekonTheme.jpg").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
+                mazeDisplayer.setImageFileNameCharacter("src\\resources\\Images\\leprekon\\character.jpg");
+                mazeDisplayer.setImageFileNameEnd("src\\resources\\Images\\leprekon\\end.jpg");
+                mazeDisplayer.setImageFileNameWall("src\\resources\\Images\\leprekon\\wall.jpg");
+               mazeDisplayer.setImageFilePath("EMPTY");
+
+                mazeDisplayer.redraw();
             }
             case "style2":
             {
@@ -256,7 +293,7 @@ public class MyViewController  implements Observer, IView {
             }
 
         }
-        throw new NotImplementedException();
+
     }
 
 //Has a potential to solve the size problem
