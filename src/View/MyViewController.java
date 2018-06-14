@@ -1,10 +1,10 @@
 package View;
 
+import Server.Server;
 import ViewModel.MyViewModel;
+import algorithms.mazeGenerators.AMazeGenerator;
 import algorithms.mazeGenerators.Position;
-import algorithms.search.AState;
-import algorithms.search.MazeState;
-import algorithms.search.Solution;
+import algorithms.search.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -310,6 +310,24 @@ public class MyViewController  implements Observer, IView {
     /**
      * This function will change the style of the maze
      */
+    public void setAlgorithm(){
+        ASearchingAlgorithm search = null;
+        String searchingAlgorhithm = Server.configurations.get("ASearchingAlgorithm");
+        if (searchingAlgorhithm.equals("bfs")) {
+            search = new BestFirstSearch();
+        }
+
+        if (searchingAlgorhithm.equals("dfs")) {
+            search = new DepthFirstSearch();
+        }
+
+        if (searchingAlgorhithm.equals("brfs")) {
+            search = new BreadthFirstSearch();
+        }
+        }
+    }
+
+
     public void changeStyle(ActionEvent event)
     {
         //Receiving the kind of style that the user wants
