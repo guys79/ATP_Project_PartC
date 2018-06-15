@@ -60,4 +60,5 @@ public interface IModel {
     public void saveMaze(String path);
     public void loadMaze(String path);
     public boolean win();
+    public void stopServers();
 }

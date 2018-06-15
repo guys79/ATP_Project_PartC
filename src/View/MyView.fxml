@@ -74,7 +74,7 @@
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#saveMaze" text="Save Maze" />
                                 <MenuItem mnemonicParsing="false" onAction="#loadMaze" text="Load Maze" />
-                                <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
+                                <MenuItem mnemonicParsing="false" fx:id="exit" onAction="#exit" text="Exit" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Edit">
@@ -86,7 +86,13 @@
                               <MenuItem mnemonicParsing="false" text="Style 2" onAction="#changeStyle" userData="style2"/>
                                     </items>
                                 </Menu>
-                                <MenuItem mnemonicParsing="false" text="Change Settings" />
+                                <Menu mnemonicParsing="false" text="change search algorithm">
+                                    <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#changeAlgorithm" text="Best First Search" userData="bfs" />
+                                        <MenuItem mnemonicParsing="false" onAction="#changeAlgorithm" text="Depth First Search" userData="dfs"/>
+                                        <MenuItem mnemonicParsing="false" onAction="#changeAlgorithm" text="Breadth First Search" userData="brfs"/>
+                                    </items>
+                                </Menu>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">
@@ -105,7 +111,7 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="600.0" imageFileNameWin="src/resources/Images/classic/win.jpg" imageFileNameSol="src/resources/Images/classic/sol.jpg" imageFileNameStart="src/resources/Images/classic/startClassic.png" imageFileNameEnd="src/resources/Images/classic/endClassic.jpg" imageFilePath="src/resources/Images/classic/path1.jpg" imageFileNameCharacter="src/resources/Images/classic/character1.jpg" imageFileNameWall="src/resources/Images/classic/wall4.jpg" width="600.0" />
+                <MazeDisplayer fx:id="mazeDisplayer" width="600.0" height="600.0" imageFileNameWin="src/resources/Images/classic/win.jpg" imageFileNameSol="src/resources/Images/classic/sol.jpg" imageFileNameStart="src/resources/Images/classic/startClassic.png" imageFileNameEnd="src/resources/Images/classic/endClassic.jpg" imageFilePath="src/resources/Images/classic/path1.jpg" imageFileNameCharacter="src/resources/Images/classic/character1.jpg" imageFileNameWall="src/resources/Images/classic/wall4.jpg" />
             </children>
         </Pane>
     </center>

@@ -214,6 +214,7 @@ public class MyModel extends Observable implements IModel {
     public int[][] getMaze()
     {
         int[][]maze=myMaze.geMaze();
+
         maze[myMaze.getStartPosition().GetRowIndex()][myMaze.getStartPosition().GetColumnIndex()]=2;
         maze[myMaze.getGoalPosition().GetRowIndex()][myMaze.getGoalPosition().GetColumnIndex()]=3;
         return maze;
@@ -300,10 +301,20 @@ public class MyModel extends Observable implements IModel {
 
     @Override
     public boolean win() {
+        if(myMaze==null)
+            return false;
         return this.myMaze.getGoalPosition().GetRowIndex()==this.characterPositionRowIndex && this.myMaze.getGoalPosition().GetColumnIndex()==this.characterPositionColumnIndex;
     }
 
     public Solution getSolution(){
         return solution;
+    }
+    public void stopServers()
+    {
+        if(this.solveSearchProblemServer!=null)
+            this.solveSearchProblemServer.stop();
+        if(this.mazeGeneratingServer!=null)
+            this.mazeGeneratingServer.stop();
+
     }
 }

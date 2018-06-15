@@ -7,6 +7,8 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,6 +21,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
@@ -61,6 +64,7 @@ public class MyViewController  implements Observer, IView {
     public javafx.scene.control.Label presentCol;
     public javafx.scene.control.Label presentRow;
     public javafx.scene.control.Button btn_generateMaze;
+    public MenuItem exit;
 
     public BorderPane BorderPaneId;
     //The string the we bind
@@ -69,27 +73,36 @@ public class MyViewController  implements Observer, IView {
 
     /**
      * This function will set the viewModel of this view
+     *
      * @param viewModel - The viewModel
      */
     public void setViewModel(MyViewModel viewModel) {
-
+        exit.setOnAction(event ->
+                primaryStage.fireEvent(
+                        new WindowEvent(
+                                primaryStage,
+                                WindowEvent.WINDOW_CLOSE_REQUEST
+                        )
+                )
+        );
         this.viewModel = viewModel;//Set the view model to the given model
 
         //Binding the labels to the string property in the viewModel
         lbl_rowsNum.textProperty().bind(viewModel.characterPositionRowProperty());
         lbl_columnsNum.textProperty().bind(viewModel.characterPositionColumnProperty());
     }
+
     /**
      * This function will display a given maze
+     *
      * @param maze - The maze is a two dimensional array that contains 0 and 1
      */
-    public void displayMaze(int[][] maze)
-    {
+    public void displayMaze(int[][] maze) {
         mazeDisplayer.setMaze(maze);//Display the maze using the maze displayer (our widget)
 
         //Get the position of the character
         int characterPositionRow = viewModel.getIntCharacterPositionRow();
-        int characterPositionColumn =viewModel.getIntCharacterPositionCol();
+        int characterPositionColumn = viewModel.getIntCharacterPositionCol();
 
         //Display the character
         mazeDisplayer.setCharacterPosition(characterPositionRow, characterPositionColumn);
@@ -101,7 +114,7 @@ public class MyViewController  implements Observer, IView {
 
     }
 
-    public void solveMaze(){
+    public void solveMaze() {
         this.viewModel.solveMaze();
      /*   ArrayList<AState> path=new ArrayList<>();
         path.add(new MazeState(new Position(1,1)));
@@ -122,7 +135,8 @@ public class MyViewController  implements Observer, IView {
 
     /**
      * This function will handle the call of the observerable
-     * @param o - The observable
+     *
+     * @param o   - The observable
      * @param arg - The runtime argument
      */
     @Override
@@ -133,15 +147,13 @@ public class MyViewController  implements Observer, IView {
             //Display the maze
             displayMaze(viewModel.getMaze());
             //Allow to the user to keep generating maze
-            if(this.viewModel.win())
-            {
-                Alert alert=new Alert(Alert.AlertType.INFORMATION);
+            if (this.viewModel.win()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("WINER!!!");
                 alert.show();
                 mazeDisplayer.win();
             }
-            if(this.viewModel.lastChangeBecauseOfSolve())
-            {
+            if (this.viewModel.lastChangeBecauseOfSolve()) {
                 this.mazeDisplayer.drawSolution(this.viewModel.getSol());
             }
             btn_generateMaze.setDisable(false);
@@ -149,9 +161,9 @@ public class MyViewController  implements Observer, IView {
     }
 
 
-
     /**
      * This function is responsible for the management of the key event
+     *
      * @param keyEvent - The key event
      */
     public void KeyPressed(KeyEvent keyEvent) {
@@ -159,7 +171,6 @@ public class MyViewController  implements Observer, IView {
         this.viewModel.moveCharacter(keyEvent.getCode());
         keyEvent.consume();
     }
-
 
 
     /**
@@ -176,9 +187,9 @@ public class MyViewController  implements Observer, IView {
     }
 
 
-
     /**
      * This function will return the value of the string property
+     *
      * @return - The row position
      */
     public String getCharacterPositionRow() {
@@ -186,9 +197,9 @@ public class MyViewController  implements Observer, IView {
     }
 
 
-
     /**
      * This function will return the string property
+     *
      * @return - The row position
      */
     public StringProperty characterPositionRowProperty() {
@@ -196,9 +207,9 @@ public class MyViewController  implements Observer, IView {
     }
 
 
-
     /**
      * This function will return the value of the string property
+     *
      * @return - The column position
      */
     public String getCharacterPositionColumn() {
@@ -206,9 +217,9 @@ public class MyViewController  implements Observer, IView {
     }
 
 
-
     /**
      * This function will return the string property
+     *
      * @return - The column position
      */
     public StringProperty characterPositionColumnProperty() {
@@ -217,38 +228,47 @@ public class MyViewController  implements Observer, IView {
 
     /**
      * This function will be responsible for the "About" action
+     *
      * @param actionEvent
      */
     public void About(ActionEvent actionEvent) {
         try {
+            System.out.println("1");
             Stage stage = new Stage();
+            System.out.println("2");
             stage.setTitle("AboutController");
+            System.out.println("3");
             FXMLLoader fxmlLoader = new FXMLLoader();
+            System.out.println("4");
             Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
+            System.out.println("5");
             Scene scene = new Scene(root, 400, 350);
+            System.out.println("6");
             stage.setScene(scene);
+            System.out.println("7");
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            System.out.println("8");
             stage.show();
+            System.out.println("9");
         } catch (Exception e) {
 
+            System.out.println("sdjdsa");
         }
     }
 
     /**
      * This function is responsible to load a maze from the computer
      */
-    public void loadMaze()
-    {
+    public void loadMaze() {
 
         //Receiving the path and than creating actual file there
-        FileChooser fileChooser=new FileChooser();
+        FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text doc(*.maze)", "*.maze"));
         File file = fileChooser.showOpenDialog(primaryStage);
-        if(file==null)
+        if (file == null)
             return;
-        if(file.getAbsolutePath().length()<=5 || !file.getAbsolutePath().substring(file.getAbsolutePath().length()-4).equals(".maze"))
-        {
-            Alert unvalidFile=new Alert(Alert.AlertType.ERROR);
+        if (file.getAbsolutePath().length() <= 5 || !file.getAbsolutePath().substring(file.getAbsolutePath().length() - 4).equals(".maze")) {
+            Alert unvalidFile = new Alert(Alert.AlertType.ERROR);
             unvalidFile.setContentText("Unvalid file");
             unvalidFile.showAndWait();
             return;
@@ -259,15 +279,14 @@ public class MyViewController  implements Observer, IView {
     /**
      * This function is responsible to save a maze on the computer
      */
-    public void saveMaze()
-    {
+    public void saveMaze() {
 
 
         //Receiving the path and than creating actual file there
-        FileChooser fileChooser=new FileChooser();
+        FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text doc(*.maze)", "*.maze"));
         File file = fileChooser.showSaveDialog(primaryStage);
-        if(file==null)
+        if (file == null)
             return;
         this.viewModel.saveMaze(file.getAbsolutePath());
 
@@ -278,39 +297,42 @@ public class MyViewController  implements Observer, IView {
     /**
      * This function is responsible to exit the app
      */
-    public void exit()
-    {
-        primaryStage.close();
+    public void exit() {
+
+        this.viewModel.stopServers();
+
+    }
+
+    public void anotherGame() {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("Do you want to play another game?");
+        ButtonType yes = new ButtonType("Yes!");
+        ButtonType no = new ButtonType("No");
+        alert.getButtonTypes().setAll(yes, no);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == no) {
+            Alert funnyAlert = new Alert(Alert.AlertType.INFORMATION);
+            funnyAlert.setContentText("I don't really care... I'll generate another one for you XD");
+            funnyAlert.showAndWait();
+        }
+        this.generateMaze();
 
 
     }
 
-    public void anotherGame()
-    {
-
-            Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setContentText("Do you want to play another game?");
-            ButtonType yes=new ButtonType("Yes!");
-            ButtonType no=new ButtonType("No");
-            alert.getButtonTypes().setAll(yes,no);
-            Optional<ButtonType> result = alert.showAndWait();
-            if(result.get()==no)
-            {
-                Alert funnyAlert=new Alert(Alert.AlertType.INFORMATION);
-                funnyAlert.setContentText("I don't really care... I'll generate another one for you XD");
-                funnyAlert.showAndWait();
-            }
-            this.generateMaze();
-
-
-
-
-    }
     @FXML
+
+    public void changeAlgorithm(ActionEvent event) {
+        javafx.scene.control.MenuItem node = (javafx.scene.control.MenuItem) event.getSource();
+        String data = (String) node.getUserData();
+        this.setAlgorithm(data);
+    }
+
     /**
      * this function will give the user to choose what algorithm to use
      */
-    public void setAlgorithm(String searchingAlgorhithm){
+    public void setAlgorithm(String searchingAlgorhithm) {
         if (searchingAlgorhithm.equals("bfs")) {
             Server.configurations.set("ASearchingAlgorithm", "bfs");
         }
@@ -327,20 +349,17 @@ public class MyViewController  implements Observer, IView {
     /**
      * This function will change the style of the maze
      */
-    public void changeStyle(ActionEvent event)
-    {
+    public void changeStyle(ActionEvent event) {
         //Receiving the kind of style that the user wants
-        javafx.scene.control.MenuItem node = (javafx.scene.control.MenuItem) event.getSource() ;
-        String data =  (String)node.getUserData();
-        if(this.viewModel.win())
-        {
+        javafx.scene.control.MenuItem node = (javafx.scene.control.MenuItem) event.getSource();
+        String data = (String) node.getUserData();
+        if (this.viewModel.win()) {
             anotherGame();
         }
 
         //In each case we will select differently
         switch (data) {
-            case "classic":
-            {
+            case "classic": {
 
                 BorderPaneId.setStyle("-fx-background-color: bisque");
                 mazeDisplayer.setImageFileNameCharacter("src\\resources\\Images\\classic\\character1.jpg");
@@ -359,19 +378,18 @@ public class MyViewController  implements Observer, IView {
 
                 lbl_columnsNum.setTextFill(Color.BLACK);
                 lbl_rowsNum.setTextFill(Color.BLACK);
-                lbl_columnsNum.setFont(Font.font("Vardana",FontWeight.NORMAL,12));
-                lbl_rowsNum.setFont(Font.font("Vardana",FontWeight.NORMAL,12));
+                lbl_columnsNum.setFont(Font.font("Vardana", FontWeight.NORMAL, 12));
+                lbl_rowsNum.setFont(Font.font("Vardana", FontWeight.NORMAL, 12));
 
                 presentRow.setTextFill(Color.BLACK);
                 presentCol.setTextFill(Color.BLACK);
-                presentRow.setFont(Font.font("Vardana",FontWeight.NORMAL,12));
-                presentCol.setFont(Font.font("Vardana",FontWeight.NORMAL,12));
+                presentRow.setFont(Font.font("Vardana", FontWeight.NORMAL, 12));
+                presentCol.setFont(Font.font("Vardana", FontWeight.NORMAL, 12));
 
 
                 break;
             }
-            case "Irish":
-            {
+            case "Irish": {
 
                 BorderPaneId.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("resources/Images/leprekon/LeprekonTheme.jpg").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
                 mazeDisplayer.setImageFileNameCharacter("src\\resources\\Images\\leprekon\\character.jpg");
@@ -388,19 +406,18 @@ public class MyViewController  implements Observer, IView {
 
                 lbl_columnsNum.setTextFill(Color.RED);
                 lbl_rowsNum.setTextFill(Color.RED);
-                lbl_columnsNum.setFont(Font.font("Vardana",FontWeight.BOLD,12));
-                lbl_rowsNum.setFont(Font.font("Vardana",FontWeight.BOLD,12));
+                lbl_columnsNum.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
+                lbl_rowsNum.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
 
                 presentRow.setTextFill(Color.RED);
                 presentCol.setTextFill(Color.RED);
-                presentRow.setFont(Font.font("Vardana",FontWeight.BOLD,12));
-                presentCol.setFont(Font.font("Vardana",FontWeight.BOLD,12));
+                presentRow.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
+                presentCol.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
 
                 break;
 
             }
-            case "style2":
-            {
+            case "style2": {
                 break;
             }
 
@@ -408,15 +425,51 @@ public class MyViewController  implements Observer, IView {
         mazeDisplayer.redraw();
     }
 
-//Has a potential to solve the size problem
-public void setResizeEvent(Scene scene) {
-    throw new NotImplementedException();
-}
+    //Has a potential to solve the size problem
+    public void setResizeEvent(Scene scene) {
+        long width = 0;
+        long height = 0;
+        scene.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+                System.out.println("Width: " + newSceneWidth);
+                mazeDisplayer.setWidth(newSceneWidth.doubleValue() / 8 * 6);
+                System.out.println(newSceneWidth.doubleValue() / 8 * 6);
+                if(viewModel.win())
+                {
+                    mazeDisplayer.win();
+                }
+                else
+                {
+                    mazeDisplayer.redraw();
+                }
 
-public void setPrimaryStage(Stage primaryStage)
-{
-    this.primaryStage=primaryStage;
-}
+
+            }
+        });
+        scene.heightProperty().addListener(new ChangeListener<Number>() {
+                                               @Override
+                                               public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+                                                   System.out.println("Height: " + newSceneHeight);
+                                                   mazeDisplayer.setHeight(newSceneHeight.doubleValue() / 7 * 6);
+                                                   System.out.println(newSceneHeight.doubleValue() / 7 * 6);
+                                                   if(viewModel.win())
+                                                   {
+                                                       mazeDisplayer.win();
+                                                   }
+                                                   else
+                                                   {
+                                                       mazeDisplayer.redraw();
+                                                   }
+                                               }
+                                           }
+        );
+    }
+
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
 
 
 }

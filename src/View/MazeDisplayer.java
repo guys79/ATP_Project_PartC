@@ -149,6 +149,8 @@ public class MazeDisplayer extends Canvas {
                 //Calculate the siz of each  cell in the maze
                 double cellHeight = canvasHeight / maze.length;
                 double cellWidth = canvasWidth / maze[0].length;
+                System.out.println("cell height ="+cellHeight);
+                System.out.println("cell width ="+cellWidth);
 
                 try {
                     //Getting the images
@@ -175,7 +177,7 @@ public class MazeDisplayer extends Canvas {
                         for (int j = 0; j < maze[0].length; j++) {
 
                             if (maze[i][j] == 1) {
-                                gc.drawImage(wallImage, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+                                gc.drawImage(wallImage, j * cellWidth, i * cellHeight, cellWidth, cellHeight);
 
                             }
                             else
@@ -183,21 +185,22 @@ public class MazeDisplayer extends Canvas {
                                 if(maze[i][j]==3)
                                 {
 
-                                    gc.drawImage(end, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+                                    gc.drawImage(end, j * cellWidth, i * cellHeight, cellWidth, cellHeight);
                                 }
                                 else {
                                     if (maze[i][j] == 2) {
-                                        gc.drawImage(start, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+                                        gc.drawImage(start, j * cellWidth, i * cellHeight, cellWidth, cellHeight);
                                     } else {
                                         if (this.ImageFilePath.getValue() != null && isPathImageExist) {
 
-                                            gc.drawImage(pathImage, j * cellHeight, i * cellWidth, cellHeight, cellWidth);
+                                            gc.drawImage(pathImage, j * cellWidth, i * cellHeight, cellWidth, cellHeight);
                                         }
                                     }
                                 }
                             }
+                            System.out.print(maze[i][j]+" ");
                         }
-
+                        System.out.println();
                     }
 
 
@@ -205,7 +208,7 @@ public class MazeDisplayer extends Canvas {
 
 
                     //Draw the character
-                    gc.drawImage(characterImage, characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
+                    gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
                 } catch (FileNotFoundException e) {
                     /**print alert?*/
                     e.printStackTrace();
@@ -267,7 +270,7 @@ public class MazeDisplayer extends Canvas {
             try {
                 Image winImg = new Image(new FileInputStream(this.ImageFileNameWin.get()));
 
-                gc.drawImage(winImg,0,0,getHeight(),getWidth());
+                gc.drawImage(winImg,0,0,getWidth(),getHeight());
 
 
             } catch (FileNotFoundException e) {

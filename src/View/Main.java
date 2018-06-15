@@ -18,11 +18,12 @@ import java.util.Optional;
 
 public class Main extends Application {
 
+    MyModel model;
     @Override
     public void start(Stage primaryStage) throws Exception {
        // MyModel model = new MyModel();
         Initialize.init();
-        MyModel model=new MyModel();
+        model=new MyModel();
         model.mazeGeneratingServer.start();
         model.solveSearchProblemServer.start();
        // model.startServers();
@@ -39,7 +40,7 @@ public class Main extends Application {
         //--------------
         MyViewController view = fxmlLoader.getController();
 
-//        view.setResizeEvent(scene);
+        view.setResizeEvent(scene);
 
 
         view.setViewModel(viewModel);
@@ -51,20 +52,27 @@ public class Main extends Application {
     }
 
     private void SetStageCloseEvent(Stage primaryStage) {
-
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent windowEvent) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText("Are you sure yow want to quit?");
+                ButtonType yes=new ButtonType("Yes");
+                ButtonType no=new ButtonType("No");
+                alert.getButtonTypes().setAll(yes,no);
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK){
-                    // ... user chose OK
-                    // Close program
-                } else {
-                    // ... user chose CANCEL or closed the dialog
+                if (result.get() == no){
+
                     windowEvent.consume();
                 }
+                else
+                {
+                    model.stopServers();
+                }
+
             }
         });
+
+
     }
 
     public static void main(String[] args) {

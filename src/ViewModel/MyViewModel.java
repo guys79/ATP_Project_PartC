@@ -172,4 +172,5 @@ public class MyViewModel extends Observable implements Observer {
     public boolean win(){
         return this.model.win();
     }
+    public void stopServers(){this.model.stopServers();}
 }
