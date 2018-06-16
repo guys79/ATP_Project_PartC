@@ -184,6 +184,8 @@ public class MyViewController  implements Observer, IView {
      */
     public void KeyPressed(KeyEvent keyEvent) {
         //Tell the modelView that a character was moved
+        if(this.viewModel.win())
+            return;
         this.viewModel.moveCharacter(keyEvent.getCode());
         keyEvent.consume();
     }

@@ -36,8 +36,8 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
-                    <Label text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label text="Maze columns:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label fx:id="lbl_rows" text="Maze rows" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label fx:id="lbl_cols" text="Maze columns" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <TextField fx:id="txtfld_rowsNum" disable="false" text="10" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                     <TextField fx:id="txtfld_columnsNum" disable="false" text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <TilePane GridPane.columnSpan="2" GridPane.rowIndex="2">
@@ -45,7 +45,7 @@
                             <Button fx:id="btn_generateMaze" onAction="#generateMaze" prefHeight="25.0" prefWidth="167.0" text="Generate Maze" />
                         </children>
                     </TilePane>
-                    <Button cancelButton="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                    <Button cancelButton="true" fx:id="btn_solveMaze" disable="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                     <Label fx:id="presentRow" text="Char row:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                     <Label fx:id="presentCol" text="Char column:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                     <Label fx:id="lbl_rowsNum" text="${controller.characterPositionRow}" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -72,7 +72,7 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
-                                <MenuItem mnemonicParsing="false" onAction="#saveMaze" text="Save Maze" />
+                                <MenuItem fx:id="menuItemSave" mnemonicParsing="false" disable="true" onAction="#saveMaze" text="Save Maze" />
                                 <MenuItem mnemonicParsing="false" onAction="#loadMaze" text="Load Maze" />
                                 <MenuItem mnemonicParsing="false" fx:id="exit" onAction="#exit" text="Exit" />
                             </items>
@@ -83,7 +83,7 @@
                                     <items>
                               <MenuItem mnemonicParsing="false" text="Classic" onAction="#changeStyle" userData="classic"/>
                                         <MenuItem mnemonicParsing="false" text="Irish Mode" onAction="#changeStyle" userData="Irish"/>
-                              <MenuItem mnemonicParsing="false" text="Style 2" onAction="#changeStyle" userData="style2"/>
+                              <MenuItem mnemonicParsing="false" text="Harry Potter Mayhem" onAction="#changeStyle" userData="harry potter"/>
                                     </items>
                                 </Menu>
                                 <Menu mnemonicParsing="false" text="change search algorithm">
