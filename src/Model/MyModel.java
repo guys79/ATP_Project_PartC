@@ -59,7 +59,7 @@ public class MyModel extends Observable implements IModel {
             writer.println(myMaze.getGoalPosition().GetColumnIndex());
             writer.println(height);
             writer.println(width);
-            int [][] maze=myMaze.geMaze();
+            int [][] maze=myMaze.getMaze();
             for (int i=0;i<height;i++){
                 for(int j=0;j<width;j++){
                     writer.println(maze[i][j]);
@@ -150,7 +150,7 @@ public class MyModel extends Observable implements IModel {
     {
         if(myMaze==null)
             return false;
-        int [][] maze=myMaze.geMaze();
+        int [][] maze=myMaze.getMaze();
         return !(row<0||row==maze.length|| col<0||col==maze[0].length||maze[row][col]==1);
     }
 
@@ -213,7 +213,7 @@ public class MyModel extends Observable implements IModel {
      */
     public int[][] getMaze()
     {
-        int[][]maze=myMaze.geMaze();
+        int[][]maze=myMaze.getMaze();
 
         maze[myMaze.getStartPosition().GetRowIndex()][myMaze.getStartPosition().GetColumnIndex()]=2;
         maze[myMaze.getGoalPosition().GetRowIndex()][myMaze.getGoalPosition().GetColumnIndex()]=3;
