@@ -173,4 +173,6 @@ public class MyViewModel extends Observable implements Observer {
         return this.model.win();
     }
     public void stopServers(){this.model.stopServers();}
+
+    public boolean isLegalMove(int row,int col){return this.model.IsLegalMove(row,col);}
 }

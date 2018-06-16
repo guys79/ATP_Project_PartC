@@ -278,6 +278,38 @@ public class MazeDisplayer extends Canvas {
             }
         }
     }
+    public String location(double relLocRow,double relLocCol)
+    {
+        if(relLocCol<0 || relLocRow<0)
+            return "";
+        double canvasHeight = getHeight();
+        double canvasWidth = getWidth();
+
+        //Calculate the size of each  cell in the maze
+        double cellHeight = canvasHeight / maze.length;
+        double cellWidth = canvasWidth / maze[0].length;
+
+
+        int col=(int)(relLocRow/cellHeight);
+        int row=(int)(relLocCol/cellWidth);
+
+        return ""+row+","+col;
+
+
+    }
+    private boolean isLegalMoveString(String loc)
+    {
+        int row=Integer.parseInt(loc.substring(0,loc.indexOf(",")));
+        int col=Integer.parseInt(loc.substring(loc.indexOf(",")+1));
+        return  this.isLegalMove(row,col);
+    }
+    private boolean isLegalMove(int row,int col)
+    {
+        if(this.maze==null)
+            return false;
+        return !(row<0||row==maze.length|| col<0||col==maze[0].length||maze[row][col]==1);
+    }
+
     public String getImageFileNameWall() {
         return ImageFileNameWall.get();
     }

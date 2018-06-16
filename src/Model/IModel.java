@@ -46,10 +46,11 @@ public interface IModel {
 
     /**
      * This function will check whether the new move is a legal move or not
-     * @param movement - The movement
+     * @param row - row number
+     * @param col - col number
      * @return
      */
-    public boolean IsLegalMove(KeyCode movement);
+    public boolean IsLegalMove(int row,int col);
 
     public Solution solveMaze();
 
