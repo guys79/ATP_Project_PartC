@@ -238,7 +238,7 @@ public class MazeDisplayer extends Canvas {
         if (imgSol == null) {
             gc.setFill(Color.GOLD);
             for (; i < path.size() - j; i++) {
-                gc.fillRect(((MazeState) path.get(i)).getCurrentPosition().GetColumnIndex() * cellHeight, ((MazeState) path.get(i)).getCurrentPosition().GetRowIndex() * cellWidth, cellHeight, cellWidth);
+                gc.fillRect(((MazeState) path.get(i)).getCurrentPosition().GetColumnIndex() * cellWidth, ((MazeState) path.get(i)).getCurrentPosition().GetRowIndex() * cellHeight, cellWidth, cellHeight);
             }
         }
         else
@@ -250,7 +250,7 @@ public class MazeDisplayer extends Canvas {
                 e.printStackTrace();
             }
             for (; i < path.size() - j; i++) {
-                gc.drawImage(solImg,((MazeState) path.get(i)).getCurrentPosition().GetColumnIndex() * cellHeight, ((MazeState) path.get(i)).getCurrentPosition().GetRowIndex() * cellWidth, cellHeight, cellWidth);
+                gc.drawImage(solImg,((MazeState) path.get(i)).getCurrentPosition().GetColumnIndex() * cellWidth, ((MazeState) path.get(i)).getCurrentPosition().GetRowIndex() * cellHeight, cellWidth, cellHeight);
             }
         }
 

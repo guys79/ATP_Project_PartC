@@ -18,12 +18,12 @@ import java.util.Optional;
 
 public class Main extends Application {
 
-    MyModel model;
+    MyViewController view;
     @Override
     public void start(Stage primaryStage) throws Exception {
        // MyModel model = new MyModel();
         Initialize.init();
-        model=new MyModel();
+        MyModel model=new MyModel();
         model.mazeGeneratingServer.start();
         model.solveSearchProblemServer.start();
        // model.startServers();
@@ -38,7 +38,7 @@ public class Main extends Application {
 
         primaryStage.setScene(scene);
         //--------------
-        MyViewController view = fxmlLoader.getController();
+        view = fxmlLoader.getController();
 
         view.setResizeEvent(scene);
 
@@ -66,7 +66,7 @@ public class Main extends Application {
                 }
                 else
                 {
-                    model.stopServers();
+                    view.exit();
                 }
 
             }

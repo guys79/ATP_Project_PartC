@@ -28,6 +28,8 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
@@ -42,6 +44,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -61,15 +64,21 @@ public class MyViewController  implements Observer, IView {
     public javafx.scene.control.TextField txtfld_columnsNum;
     public javafx.scene.control.Label lbl_rowsNum;
     public javafx.scene.control.Label lbl_columnsNum;
+    public javafx.scene.control.Label lbl_cols;
+    public javafx.scene.control.Label lbl_rows;
     public javafx.scene.control.Label presentCol;
     public javafx.scene.control.Label presentRow;
     public javafx.scene.control.Button btn_generateMaze;
+    public javafx.scene.control.Button btn_solveMaze;
     public MenuItem exit;
-
+    public MenuItem menuItemSave;
+    private Thread musicThread;
+    private MediaPlayer mp;
     public BorderPane BorderPaneId;
     //The string the we bind
     private StringProperty characterPositionRow = new SimpleStringProperty();
     private StringProperty characterPositionColumn = new SimpleStringProperty();
+    private String currentStyle="classic";
 
     /**
      * This function will set the viewModel of this view
@@ -77,6 +86,7 @@ public class MyViewController  implements Observer, IView {
      * @param viewModel - The viewModel
      */
     public void setViewModel(MyViewModel viewModel) {
+        setMusicTheme("src\\resources\\Images\\classic\\background music.mp3");
         exit.setOnAction(event ->
                 primaryStage.fireEvent(
                         new WindowEvent(
@@ -115,6 +125,7 @@ public class MyViewController  implements Observer, IView {
     }
 
     public void solveMaze() {
+        btn_solveMaze.setDisable(true);
         this.viewModel.solveMaze();
      /*   ArrayList<AState> path=new ArrayList<>();
         path.add(new MazeState(new Position(1,1)));
@@ -143,20 +154,25 @@ public class MyViewController  implements Observer, IView {
     public void update(Observable o, Object arg) {
         //If the observable is our model (right now we don't care about other observables
         if (o == viewModel) {
-
+            btn_generateMaze.setDisable(false);
+            btn_solveMaze.setDisable(false);
+            menuItemSave.setDisable(false);
             //Display the maze
             displayMaze(viewModel.getMaze());
             //Allow to the user to keep generating maze
             if (this.viewModel.win()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("WINER!!!");
+                alert.setContentText("WINNER!!!");
                 alert.show();
+
+                setVictoryMusic(currentStyle);
                 mazeDisplayer.win();
+                btn_solveMaze.setDisable(true);
             }
             if (this.viewModel.lastChangeBecauseOfSolve()) {
                 this.mazeDisplayer.drawSolution(this.viewModel.getSol());
             }
-            btn_generateMaze.setDisable(false);
+
         }
     }
 
@@ -182,11 +198,28 @@ public class MyViewController  implements Observer, IView {
         int width = Integer.valueOf(txtfld_columnsNum.getText());
         //Until we generate the maze we are not allowing the user to generate another maze
         btn_generateMaze.setDisable(true);
+        if(this.viewModel.win())
+            setBackgroundMusic(currentStyle);
         //Generate the maze
         viewModel.generateMaze(width, height);
     }
 
-
+private void setBackgroundMusic( String style) {
+    switch (style) {
+        case "classic": {
+            setMusicTheme("src\\resources\\Images\\classic\\background music.mp3");
+            break;
+        }
+        case "Irish": {
+            setMusicTheme("src\\resources\\Images\\leprekon\\background music.mp3");
+            break;
+        }
+        case "harry potter": {
+            setMusicTheme("src\\resources\\Images\\harry potter\\background music.mp3");
+            break;
+        }
+    }
+}
     /**
      * This function will return the value of the string property
      *
@@ -267,8 +300,9 @@ public class MyViewController  implements Observer, IView {
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file == null)
             return;
-        if (file.getAbsolutePath().length() <= 5 || !file.getAbsolutePath().substring(file.getAbsolutePath().length() - 4).equals(".maze")) {
+        if (file.getAbsolutePath().length() <= 5 || !file.getAbsolutePath().substring(file.getAbsolutePath().length() - 4).equals("maze")) {
             Alert unvalidFile = new Alert(Alert.AlertType.ERROR);
+            System.out.println(file.getAbsolutePath().substring(file.getAbsolutePath().length() - 4));
             unvalidFile.setContentText("Unvalid file");
             unvalidFile.showAndWait();
             return;
@@ -300,6 +334,7 @@ public class MyViewController  implements Observer, IView {
     public void exit() {
 
         this.viewModel.stopServers();
+        mp.stop();
 
     }
 
@@ -346,6 +381,29 @@ public class MyViewController  implements Observer, IView {
         }
     }
 
+    private void setVictoryMusic(String style)
+    {System.out.println("fuck mahal");
+        switch (style)
+        {
+            case "classic":
+            {
+                setMusicTheme("src\\resources\\Images\\classic\\win music.mp3");
+                break;
+            }
+            case "Irish":
+            {
+                setMusicTheme("src\\resources\\Images\\leprekon\\win music.mp3");
+                break;
+            }
+            case "harry potter":
+            {
+                System.out.println("fuck mahal");
+                setMusicTheme("src\\resources\\Images\\harry potter\\win music.mp3");
+                break;
+            }
+        }
+
+    }
     /**
      * This function will change the style of the maze
      */
@@ -361,7 +419,7 @@ public class MyViewController  implements Observer, IView {
         switch (data) {
             case "classic": {
 
-                BorderPaneId.setStyle("-fx-background-color: bisque");
+                System.out.println("1");
                 mazeDisplayer.setImageFileNameCharacter("src\\resources\\Images\\classic\\character1.jpg");
                 mazeDisplayer.setImageFileNameEnd("src\\resources\\Images\\classic\\endClassic.jpg");
                 mazeDisplayer.setImageFileNameWall("src\\resources\\Images\\classic\\wall4.jpg");
@@ -386,7 +444,23 @@ public class MyViewController  implements Observer, IView {
                 presentRow.setFont(Font.font("Vardana", FontWeight.NORMAL, 12));
                 presentCol.setFont(Font.font("Vardana", FontWeight.NORMAL, 12));
 
-
+                lbl_rows.setFont(Font.font("Vardana", FontWeight.NORMAL, 12));
+                lbl_cols.setFont(Font.font("Vardana", FontWeight.NORMAL, 12));
+                lbl_rows.setTextFill(Color.BLACK);
+                lbl_cols.setTextFill(Color.BLACK);
+                lbl_rows.setStyle("-fx-background-color: bisque");
+                lbl_cols.setStyle("-fx-background-color: bisque");
+                BorderPaneId.setStyle(null);
+                BorderPaneId.setStyle("-fx-background-color: bisque");
+                System.out.println("2");
+                if(this.viewModel.win())
+                {
+                    setMusicTheme("src\\resources\\Images\\classic\\win music.mp3");
+                }
+                else {
+                    setMusicTheme("src\\resources\\Images\\classic\\background music.mp3");
+                }
+                currentStyle="classic";
                 break;
             }
             case "Irish": {
@@ -414,11 +488,60 @@ public class MyViewController  implements Observer, IView {
                 presentRow.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
                 presentCol.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
 
+                lbl_rows.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
+                lbl_cols.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
+                lbl_rows.setTextFill(Color.RED);
+                lbl_cols.setTextFill(Color.RED);
+                lbl_rows.setStyle("-fx-background-color: black");
+                lbl_cols.setStyle("-fx-background-color: black");
+                if(this.viewModel.win())
+                {
+                    setMusicTheme("src\\resources\\Images\\leprekon\\win music.mp3");
+                }
+                else {
+                setMusicTheme("src\\resources\\Images\\leprekon\\background music.mp3");}
+                currentStyle="Irish";
                 break;
 
             }
-            case "style2": {
-                break;
+            case "harry potter": {
+                BorderPaneId.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("resources/Images/harry potter/background2.jpg").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
+                mazeDisplayer.setImageFileNameCharacter("src\\resources\\Images\\harry potter\\character2.jpg");
+                mazeDisplayer.setImageFileNameEnd("src\\resources\\Images\\harry potter\\end.jpg");
+                mazeDisplayer.setImageFilePath("src\\resources\\Images\\harry potter\\wall.jpg");
+                mazeDisplayer.setImageFileNameStart("src\\resources\\Images\\harry potter\\start.jpg");
+                mazeDisplayer.setImageFileNameWall("src\\resources\\Images\\harry potter\\path.jpg");
+                mazeDisplayer.setImageFileNameSol("src\\resources\\Images\\harry potter\\sol.jpg");
+                mazeDisplayer.setImageFileNameWin("src\\resources\\Images\\harry potter\\win.jpg");
+
+                lbl_columnsNum.setStyle("-fx-background-color: black");
+                lbl_rowsNum.setStyle("-fx-background-color: black");
+                presentCol.setStyle("-fx-background-color: black");
+                presentRow.setStyle("-fx-background-color: black");
+
+                lbl_columnsNum.setTextFill(Color.RED);
+                lbl_rowsNum.setTextFill(Color.RED);
+                lbl_columnsNum.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
+                lbl_rowsNum.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
+
+                presentRow.setTextFill(Color.RED);
+                presentCol.setTextFill(Color.RED);
+                presentRow.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
+                presentCol.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
+                lbl_rows.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
+                lbl_cols.setFont(Font.font("Vardana", FontWeight.BOLD, 12));
+                lbl_rows.setTextFill(Color.RED);
+                lbl_cols.setTextFill(Color.RED);
+                lbl_rows.setStyle("-fx-background-color: black");
+                lbl_cols.setStyle("-fx-background-color: black");
+                if(this.viewModel.win())
+                {
+
+                    setMusicTheme("src\\resources\\Images\\harry potter\\win music.mp3");
+                }
+                else {
+                setMusicTheme("src\\resources\\Images\\harry potter\\background music.mp3");}
+                currentStyle="harry potter";
             }
 
         }
@@ -469,6 +592,17 @@ public class MyViewController  implements Observer, IView {
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+    }
+
+    public void setMusicTheme(String path)
+    {
+        if(mp!=null) {
+
+            mp.stop();
+        }
+        Media m = new Media(Paths.get(path).toUri().toString());
+        mp=new MediaPlayer(m);
+        mp.play();
     }
 
 
