@@ -129,7 +129,7 @@ public class MyModel extends Observable implements IModel {
                         is.read(decompressedMaze);
                         Maze maze = new Maze(decompressedMaze);
                         myMaze=maze;
-                        maze.print();
+
                     } catch (Exception var10) {
                         var10.printStackTrace();
                     }
@@ -265,12 +265,9 @@ public class MyModel extends Observable implements IModel {
                         toServer.flush();
                         Solution mazeSolution = (Solution)fromServer.readObject();
                         solution=mazeSolution;
-                        System.out.println(String.format("Solution steps: %s", mazeSolution));
+
                         ArrayList<AState> mazeSolutionSteps = mazeSolution.getSolutionPath();
 
-                        for(int i = 0; i < mazeSolutionSteps.size(); ++i) {
-                            System.out.println(String.format("%s. %s", i, ((AState)mazeSolutionSteps.get(i)).toString()));
-                        }
                     } catch (Exception var10) {
                         var10.printStackTrace();
                     }

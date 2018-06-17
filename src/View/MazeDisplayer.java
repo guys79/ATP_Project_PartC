@@ -149,14 +149,13 @@ public class MazeDisplayer extends Canvas {
                 //Calculate the siz of each  cell in the maze
                 double cellHeight = canvasHeight / maze.length;
                 double cellWidth = canvasWidth / maze[0].length;
-                System.out.println("cell height ="+cellHeight);
-                System.out.println("cell width ="+cellWidth);
+
 
                 try {
                     //Getting the images
 
                     Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
-                    System.out.println(ImageFileNameWall.getValue());
+
                     Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
                     Image end = new Image(new FileInputStream(ImageFileNameEnd.get()));
                     Image start = new Image(new FileInputStream(ImageFileNameStart.get()));
@@ -198,9 +197,10 @@ public class MazeDisplayer extends Canvas {
                                     }
                                 }
                             }
-                            System.out.print(maze[i][j]+" ");
+
+
                         }
-                        System.out.println();
+
                     }
 
 

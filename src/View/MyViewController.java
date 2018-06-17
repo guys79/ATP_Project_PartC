@@ -199,9 +199,22 @@ public class MyViewController  implements Observer, IView {
      * This function is responsible to generate the maze (or rather, tell the view model to generate the maze)
      */
     public void generateMaze() {
-        //Receive the size of the maze
-        int height = Integer.valueOf(txtfld_rowsNum.getText());
-        int width = Integer.valueOf(txtfld_columnsNum.getText());
+        int height=-1;
+        int width=-1;
+        try {
+            //Receive the size of the maze
+            height = Integer.valueOf(txtfld_rowsNum.getText());
+            width = Integer.valueOf(txtfld_columnsNum.getText());
+            if(!(height >= 0 && width >= 0 && height*width>=9 ))
+                throw new Exception("The minimal size of the maze is 3X3");
+        }
+        catch (Exception e)
+        {
+            Alert error=new Alert(Alert.AlertType.ERROR);
+            error.setContentText(e.getMessage());
+            error.show();
+            return;
+        }
         //Until we generate the maze we are not allowing the user to generate another maze
         btn_generateMaze.setDisable(true);
         if (this.viewModel.win())
@@ -273,110 +286,29 @@ public class MyViewController  implements Observer, IView {
      */
     public void About(ActionEvent actionEvent) {
         try {
-            System.out.println("1");
+
             Stage stage = new Stage();
-            System.out.println("2");
+
             stage.setTitle("AboutController");
-            System.out.println("3");
+
             FXMLLoader fxmlLoader = new FXMLLoader();
-            System.out.println("4");
+
             Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
-            System.out.println("5");
+
             Scene scene = new Scene(root, 400, 350);
-            System.out.println("6");
+
             stage.setScene(scene);
-            System.out.println("7");
+
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-            System.out.println("8");
+
             stage.show();
-            System.out.println("9");
+
         } catch (Exception e) {
 
-            System.out.println("sdjdsa");
+
         }
     }
 
-
-    public void handlePressEvent(MouseEvent t) {
-        originalX = t.getSceneX();
-        originalY = t.getSceneY();
-        System.out.println(originalX);
-        System.out.println(originalY);
-        double locx=t.getSceneX()- vboxLeft.getWidth();
-        double locy=t.getSceneY()- vboxUp.getHeight();
-        String str=mazeDisplayer.location(locx,locy);
-        System.out.println(str);
-
-
-
-    }
-
-
-    public void handleDragEvent(MouseEvent t) {
-        if (this.viewModel.win())
-            return;
-        double locx=t.getSceneX()- vboxLeft.getWidth();
-        double locy=t.getSceneY()- vboxUp.getHeight();
-        String str=mazeDisplayer.location(locx,locy);
-        if(str.equals(""))
-            return;
-        int row=Integer.parseInt(str.substring(0,str.indexOf(",")));
-        int col=Integer.parseInt(str.substring(str.indexOf(",")+1));
-
-
-        locx=originalX- vboxLeft.getWidth();
-        locy=originalY- vboxUp.getHeight();
-        String str2=mazeDisplayer.location(locx,locy);
-        if(str2.equals(""))
-            return;
-        int row2=Integer.parseInt(str.substring(0,str.indexOf(",")));
-        int col2=Integer.parseInt(str.substring(str.indexOf(",")+1));
-
-        System.out.println("row= "+row);
-        System.out.println("col= "+col);
-        System.out.println("original row= "+row2);
-        System.out.println("original col= "+col2);
-        System.out.println("row= "+originalX);
-        System.out.println("col= "+originalY);
-        System.out.println("original row= "+t.getSceneX());
-        System.out.println("original col= "+t.getSceneY());
-        KeyCode key=null;
-        //Down + Right
-        if(row==row2+1 && col==col2+1)
-            key=KeyCode.NUMPAD3;
-        //Down
-        if(row==row2+1 && col==col2)
-            key=KeyCode.NUMPAD2;
-        //Down +Left
-        if(row==row2+1 && col==col2-1)
-            key=KeyCode.NUMPAD1;
-
-        //Right
-        if(row==row2 && col==col2+1)
-            key=KeyCode.NUMPAD6;
-        //Left
-        if(row==row2 && col==col2-1)
-            key=KeyCode.NUMPAD4;
-
-        //Up + Right
-        if(row==row2-1 && col==col2+1)
-            key=KeyCode.NUMPAD9;
-        //Up
-        if(row==row2-1 && col==col2)
-            key=KeyCode.NUMPAD8;
-        //Up + Left
-        if(row==row2-1 && col==col2-1)
-            key=KeyCode.NUMPAD7;
-
-
-        if(key==null)
-            return;
-        this.viewModel.moveCharacter(key);
-
-
-
-
-    }
 
     /**
      * This function is responsible to load a maze from the computer
@@ -391,7 +323,6 @@ public class MyViewController  implements Observer, IView {
             return;
         if (file.getAbsolutePath().length() <= 5 || !file.getAbsolutePath().substring(file.getAbsolutePath().length() - 4).equals("maze")) {
             Alert unvalidFile = new Alert(Alert.AlertType.ERROR);
-            System.out.println(file.getAbsolutePath().substring(file.getAbsolutePath().length() - 4));
             unvalidFile.setContentText("Unvalid file");
             unvalidFile.showAndWait();
             return;
@@ -471,7 +402,7 @@ public class MyViewController  implements Observer, IView {
     }
 
     private void setVictoryMusic(String style) {
-        System.out.println("fuck mahal");
+
         switch (style) {
             case "classic": {
                 setMusicTheme("src\\resources\\Images\\classic\\win music.mp3");
@@ -482,7 +413,7 @@ public class MyViewController  implements Observer, IView {
                 break;
             }
             case "harry potter": {
-                System.out.println("fuck mahal");
+
                 setMusicTheme("src\\resources\\Images\\harry potter\\win music.mp3");
                 break;
             }
@@ -505,7 +436,7 @@ public class MyViewController  implements Observer, IView {
         switch (data) {
             case "classic": {
 
-                System.out.println("1");
+
                 mazeDisplayer.setImageFileNameCharacter("src\\resources\\Images\\classic\\character1.jpg");
                 mazeDisplayer.setImageFileNameEnd("src\\resources\\Images\\classic\\endClassic.jpg");
                 mazeDisplayer.setImageFileNameWall("src\\resources\\Images\\classic\\wall4.jpg");
@@ -538,7 +469,7 @@ public class MyViewController  implements Observer, IView {
                 lbl_cols.setStyle("-fx-background-color: bisque");
                 BorderPaneId.setStyle(null);
                 BorderPaneId.setStyle("-fx-background-color: bisque");
-                System.out.println("2");
+
                 if (this.viewModel.win()) {
                     setMusicTheme("src\\resources\\Images\\classic\\win music.mp3");
                 } else {
@@ -637,9 +568,10 @@ public class MyViewController  implements Observer, IView {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                System.out.println("Width: " + newSceneWidth);
+
                 mazeDisplayer.setWidth(newSceneWidth.doubleValue() / 8 * 6);
-                System.out.println(newSceneWidth.doubleValue() / 8 * 6);
+
+
                 if (viewModel.win()) {
                     mazeDisplayer.win();
                 } else {
@@ -652,9 +584,9 @@ public class MyViewController  implements Observer, IView {
         scene.heightProperty().addListener(new ChangeListener<Number>() {
                                                @Override
                                                public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-                                                   System.out.println("Height: " + newSceneHeight);
+
                                                    mazeDisplayer.setHeight(newSceneHeight.doubleValue() / 7 * 6);
-                                                   System.out.println(newSceneHeight.doubleValue() / 7 * 6);
+
                                                    if (viewModel.win()) {
                                                        mazeDisplayer.win();
                                                    } else {

@@ -20,7 +20,7 @@
 
 <BorderPane fx:id="BorderPaneId" onKeyPressed="#KeyPressed" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <left>
-        <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
+        <VBox fx:id="vboxLeft" prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
                 <GridPane prefHeight="${BorderPaneId.height}" prefWidth="${BorderPaneId.width}">
                     <columnConstraints>
@@ -66,7 +66,7 @@
         </HBox>
     </bottom>
     <top>
-        <VBox BorderPane.alignment="CENTER">
+        <VBox fx:id="vboxUp" BorderPane.alignment="CENTER">
             <children>
                 <MenuBar>
                     <menus>
