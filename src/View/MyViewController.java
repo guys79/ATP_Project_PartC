@@ -2,30 +2,21 @@ package View;
 
 import Server.Server;
 import ViewModel.MyViewModel;
-import algorithms.mazeGenerators.AMazeGenerator;
-import algorithms.mazeGenerators.Position;
-import algorithms.search.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -37,14 +28,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -98,7 +83,7 @@ public class MyViewController  implements Observer, IView {
                 )
         );
 
-   ;
+
         this.viewModel = viewModel;//Set the view model to the given model
 
         //Binding the labels to the string property in the viewModel
@@ -282,7 +267,7 @@ public class MyViewController  implements Observer, IView {
     /**
      * This function will be responsible for the "About" action
      *
-     * @param actionEvent
+     * @param actionEvent - The action event
      */
     public void About(ActionEvent actionEvent) {
         try {
@@ -305,7 +290,9 @@ public class MyViewController  implements Observer, IView {
 
         } catch (Exception e) {
 
-
+            Alert error=new Alert(Alert.AlertType.ERROR);
+            error.setContentText(e.getMessage());
+            error.show();
         }
     }
 
@@ -387,7 +374,7 @@ public class MyViewController  implements Observer, IView {
     /**
      * this function will give the user to choose what algorithm to use
      */
-    public void setAlgorithm(String searchingAlgorhithm) {
+    private void setAlgorithm(String searchingAlgorhithm) {
         if (searchingAlgorhithm.equals("bfs")) {
             Server.configurations.set("ASearchingAlgorithm", "bfs");
         }
@@ -602,7 +589,7 @@ public class MyViewController  implements Observer, IView {
         this.primaryStage = primaryStage;
     }
 
-    public void setMusicTheme(String path) {
+    private void setMusicTheme(String path) {
         if (mp != null) {
 
             mp.stop();

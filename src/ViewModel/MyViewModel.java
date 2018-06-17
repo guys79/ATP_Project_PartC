@@ -7,7 +7,7 @@ import algorithms.search.Solution;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.input.KeyCode;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 
 import java.util.Observable;
 import java.util.Observer;
@@ -23,7 +23,7 @@ public class MyViewModel extends Observable implements Observer {
     private int characterPositionColumnIndex;//The column index of the character's position
 
     //The default value
-    final String DEFAULT_VALUE = "-1";
+    private final String DEFAULT_VALUE = "-1";
     private StringProperty characterPositionRow = new SimpleStringProperty(DEFAULT_VALUE);
     private StringProperty characterPositionColumn = new SimpleStringProperty(DEFAULT_VALUE);
 
@@ -56,7 +56,7 @@ public class MyViewModel extends Observable implements Observer {
             notifyObservers();
         }
     }
-    public boolean lastChangeBecauseOfSolve(){return  model.lastChangeBecauseOfSolve();};
+    public boolean lastChangeBecauseOfSolve(){return  model.lastChangeBecauseOfSolve();}
     /**
      * This function is responsible to load a maze from the computer
      */

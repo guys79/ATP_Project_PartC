@@ -9,16 +9,15 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-;
+
 
 /**
  * This class will display a maze
@@ -210,7 +209,7 @@ public class MazeDisplayer extends Canvas {
                     //Draw the character
                     gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
                 } catch (FileNotFoundException e) {
-                    /**print alert?*/
+
                     e.printStackTrace();
 
                 }
@@ -332,7 +331,7 @@ public class MazeDisplayer extends Canvas {
 
     public void setImageFilePath(String imageFilePath) {
         this.ImageFilePath.set(imageFilePath);
-        if(this.ImageFilePath.getValue().toString().equals("EMPTY"))
+        if(this.ImageFilePath.getValue().equals("EMPTY"))
         {
 
             this.isPathImageExist=false;

@@ -7,7 +7,6 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -15,17 +14,13 @@ import java.util.Observable;
 import Client.Client;
 import Client.IClientStrategy;
 import IO.MyDecompressorInputStream;
-import Server.Server;
-import Server.ServerStrategyGenerateMaze;
-import Server.ServerStrategySolveSearchProblem;
-import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.MyMazeGenerator;
+
 import algorithms.search.AState;
-import algorithms.search.Solution;
+
 
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
+
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -44,7 +39,7 @@ public class MyModel extends Observable implements IModel {
     private Solution sol=null;
     private int characterPositionRowIndex;//The row index of the character's position
     private int characterPositionColumnIndex;//The column index of the character's position
-    Solution solution;
+    private Solution solution;
 
 
     private void toFile(String filePath){
@@ -67,12 +62,10 @@ public class MyModel extends Observable implements IModel {
                 writer.println(",");
             }
             writer.close();
-        } catch (FileNotFoundException var12) {
+        } catch (Exception var12) {
             var12.printStackTrace();
-        } catch (UnsupportedEncodingException var13) {
-            var13.printStackTrace();
-        }
 
+        }
     }
     private void fromFile(String filePath){
         try {
@@ -242,7 +235,7 @@ public class MyModel extends Observable implements IModel {
      * This function will check whether the new move is a legal move or not
      * @param row - row number
      * @param col - col number
-     * @return
+     * @return - Returns weather the move is legak
      */
     public boolean IsLegalMove(int row,int col)
     {
