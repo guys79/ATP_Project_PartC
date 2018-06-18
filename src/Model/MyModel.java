@@ -42,6 +42,12 @@ public class MyModel extends Observable implements IModel {
     private Solution solution;
 
 
+    public void startServer()
+    {
+        mazeGeneratingServer.start();
+        solveSearchProblemServer.start();
+    }
+
     private void toFile(String filePath){
         PrintWriter writer = null;
         try {
