@@ -14,13 +14,9 @@ import java.util.Observable;
 import Client.Client;
 import Client.IClientStrategy;
 import IO.MyDecompressorInputStream;
-
 import algorithms.search.AState;
-
-
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
-
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -42,7 +38,7 @@ public class MyModel extends Observable implements IModel {
     private Solution solution;
 
 
-    public void startServer()
+    public void sartServer()
     {
         mazeGeneratingServer.start();
         solveSearchProblemServer.start();

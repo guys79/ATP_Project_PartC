@@ -1,19 +1,14 @@
 package View;
-
 import algorithms.search.AState;
 import algorithms.search.MazeState;
 import algorithms.search.Solution;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-
-
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
