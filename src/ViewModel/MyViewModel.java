@@ -159,20 +159,35 @@ public class MyViewModel extends Observable implements Observer {
         model.generateMaze(width, height);
     }
 
+    /**
+     * This function will return the solution
+     * @return - The solution
+     */
     public Solution getSol()
     {
         return this.model.getSolution();
     }
 
+    /**
+     * This function will notify the model to solve the maze
+     */
     public void solveMaze()
     {
         this.model.solveMaze();
     }
 
+    /**
+     * This function will ask the model if the user won
+     * @return - True if the user won
+     */
     public boolean win(){
         return this.model.win();
     }
+
+    /**
+     * This function will notify the model to stop the servers
+     */
     public void stopServers(){this.model.stopServers();}
 
-    public boolean isLegalMove(int row,int col){return this.model.IsLegalMove(row,col);}
+
 }

@@ -32,7 +32,7 @@ public class MazeDisplayer extends Canvas {
     private StringProperty ImageFileNameEnd = new SimpleStringProperty();
     private StringProperty ImageFileNameSol = new SimpleStringProperty();
     private StringProperty ImageFileNameWin = new SimpleStringProperty();
-    private boolean isPathImageExist=true;
+    private boolean isPathImageExist=true;//True of there is an image for the path
 
 
 
@@ -83,18 +83,23 @@ public class MazeDisplayer extends Canvas {
 
     private void nullHandle()
     {
+        //Calculate the siz of each  cell in the maze
         double canvasHeight = getHeight();
         double canvasWidth = getWidth();
-
-        //Calculate the siz of each  cell in the maze
         double cellHeight = canvasHeight / maze.length;
         double cellWidth = canvasWidth / maze[0].length;
+
+        //Clearing canvas
         GraphicsContext gc = getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
+
+        //Setting a default maze sizes
         if (maze == null) {
             this.maze = new int[10][10];
 
         }
+
+        //Drawing the null picture
         for (int i = 0; i < this.maze.length; i++) {
             for (int j = 0; j < this.maze[0].length; j++) {
                 if(i==j || i+j==this.maze.length-1)
@@ -110,18 +115,24 @@ public class MazeDisplayer extends Canvas {
 
             }
         }
+        //Showing an appropriate alert
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setContentText("The Image of the wall/character does not exist");
         alert.show();
     }
+
+
     /**
      * This function is responsible to draw the maze with the given data (The fields of this class)
      */
     public void redraw() {
 
+        //If there is no character/wall image
         if (ImageFileNameCharacter.getValue() == null || ImageFileNameWall.getValue() == null) {
+            //Handles that case
             nullHandle();
         } else {
+            //Setting default values for the start/end image if they are null
             if(ImageFileNameStart.getValue()==null) {
 
                 ImageFileNameStart.setValue(ImageFilePath.getValue());
@@ -140,24 +151,24 @@ public class MazeDisplayer extends Canvas {
                 double canvasHeight = getHeight();
                 double canvasWidth = getWidth();
 
-                //Calculate the siz of each  cell in the maze
+                //Calculate the size of each  cell in the maze
                 double cellHeight = canvasHeight / maze.length;
                 double cellWidth = canvasWidth / maze[0].length;
 
 
                 try {
                     //Getting the images
-
                     Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
-
                     Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
                     Image end = new Image(new FileInputStream(ImageFileNameEnd.get()));
                     Image start = new Image(new FileInputStream(ImageFileNameStart.get()));
-
                     Image pathImage=null;
+
+                    //If the path exist
                     if(this.isPathImageExist)
                     {
-                    pathImage = new Image(new FileInputStream(ImageFilePath.get()));}
+                        pathImage = new Image(new FileInputStream(ImageFilePath.get()));
+                    }
 
 
                     //Create the maze structure
@@ -212,11 +223,14 @@ public class MazeDisplayer extends Canvas {
         }
     }
 
+    /**
+     * Drawing the solution
+     * @param sol - The given solution
+     */
     public void drawSolution(Solution sol) {
+        //Calculate the size of each  cell in the maze
         double canvasHeight = getHeight();
         double canvasWidth = getWidth();
-
-        //Calculate the size of each  cell in the maze
         double cellHeight = canvasHeight / maze.length;
         double cellWidth = canvasWidth / maze[0].length;
         int i = 1;
@@ -225,10 +239,14 @@ public class MazeDisplayer extends Canvas {
         int j = 1;
         if (this.getImageFileNameEnd() == null || this.getImageFileNameEnd().equals(this.getImageFilePath()))
             j = 0;
+
+
         ArrayList<AState> path = sol.getSolutionPath();
         GraphicsContext gc = getGraphicsContext2D();
-
         String imgSol = this.ImageFileNameSol.getValue();
+
+
+        //If there is no solution image
         if (imgSol == null) {
             gc.setFill(Color.GOLD);
             for (; i < path.size() - j; i++) {
@@ -237,6 +255,7 @@ public class MazeDisplayer extends Canvas {
         }
         else
         {
+            //If there is a solution image
             Image solImg=null;
             try {
                 solImg = new Image(new FileInputStream(this.ImageFileNameSol.get()));
@@ -250,80 +269,86 @@ public class MazeDisplayer extends Canvas {
 
     }
 
+    /**
+     * In case the player wins
+     */
     public void win()
     {
+        //Getting the graphic context
         GraphicsContext gc = getGraphicsContext2D();
 
+        //If there is no wim image
         if(ImageFileNameWin.getValue()==null)
         {
+
             gc.setFill(Color.BLUE);
             gc.fillRect(0,0,getHeight(),getWidth());
         }
         else
         {
-            try {
-                Image winImg = new Image(new FileInputStream(this.ImageFileNameWin.get()));
 
+            try {
+
+                //The win image
+                Image winImg = new Image(new FileInputStream(this.ImageFileNameWin.get()));
                 gc.drawImage(winImg,0,0,getWidth(),getHeight());
 
 
-            } catch (FileNotFoundException e) {
+            }
+            catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
-    public String location(double relLocRow,double relLocCol)
-    {
-        if(relLocCol<0 || relLocRow<0)
-            return "";
-        double canvasHeight = getHeight();
-        double canvasWidth = getWidth();
-
-        //Calculate the size of each  cell in the maze
-        double cellHeight = canvasHeight / maze.length;
-        double cellWidth = canvasWidth / maze[0].length;
 
 
-        int col=(int)(relLocRow/cellHeight);
-        int row=(int)(relLocCol/cellWidth);
-
-        return ""+row+","+col;
-
-
-    }
-    private boolean isLegalMoveString(String loc)
-    {
-        int row=Integer.parseInt(loc.substring(0,loc.indexOf(",")));
-        int col=Integer.parseInt(loc.substring(loc.indexOf(",")+1));
-        return  this.isLegalMove(row,col);
-    }
-    private boolean isLegalMove(int row,int col)
-    {
-        if(this.maze==null)
-            return false;
-        return !(row<0||row==maze.length|| col<0||col==maze[0].length||maze[row][col]==1);
-    }
-
+    /**
+     * Returns the path of the image of the wall
+     * @return - The path
+     */
     public String getImageFileNameWall() {
         return ImageFileNameWall.get();
     }
 
+    /**
+     * Setting the path of the image of the wall
+     * @param imageFileNameWall - The path
+     */
     public void setImageFileNameWall(String imageFileNameWall) {
         this.ImageFileNameWall.set(imageFileNameWall);
     }
 
+
+    /**
+     * Returns the path of the image of the wall
+     * @return - The path
+     */
     public String getImageFileNameCharacter() {
         return ImageFileNameCharacter.get();
     }
 
+
+    /**
+     * Setting the path of the image of the wall
+     * @param imageFileNameCharacter - The path
+     */
     public void setImageFileNameCharacter(String imageFileNameCharacter) {
         this.ImageFileNameCharacter.set(imageFileNameCharacter);
     }
 
+    /**
+     * Returns the path of the image of the wall
+     * @return - The path
+     */
     public String getImageFilePath() {
         return ImageFilePath.get();
     }
 
+
+    /**
+     * Setting the path of the image of the wall
+     * @param imageFilePath - The path
+     */
     public void setImageFilePath(String imageFilePath) {
         this.ImageFilePath.set(imageFilePath);
         if(this.ImageFilePath.getValue().equals("EMPTY"))
@@ -337,34 +362,78 @@ public class MazeDisplayer extends Canvas {
         }
     }
 
+
+    /**
+     * Setting the path of the image of the wall
+     * @param imageFileNameStart - The path
+     */
     public void setImageFileNameStart(String imageFileNameStart) {
         this.ImageFileNameStart.set(imageFileNameStart);
     }
+
+
+    /**
+     * Returns the path of the image of the start
+     * @return - The path
+     */
     public String getImageFileNameStart() {
         return ImageFileNameStart.get();
     }
 
+
+    /**
+     * Setting the path of the image of the wall
+     * @param imageFileNameEnd - The path
+     */
     public void setImageFileNameEnd(String imageFileNameEnd) {
         this.ImageFileNameEnd.set(imageFileNameEnd);
     }
+
+
+    /**
+     * Returns the path of the image of the end
+     * @return - The path
+     */
     public String getImageFileNameEnd() {
         return ImageFileNameEnd.get();
     }
 
+
+    /**
+     * Setting the path of the image of the wall
+     * @param imageFileNameSol - The path
+     */
     public void setImageFileNameSol(String imageFileNameSol) {
         this.ImageFileNameSol.set(imageFileNameSol);
     }
+
+
+
+    /**
+     * Returns the path of the image of the solution
+     * @return - The path
+     */
     public String getImageFileNameSol() {
         return ImageFileNameSol.get();
     }
 
+
+    /**
+     * Setting the path of the image of the wall
+     * @param imageFileNameWin - The path
+     */
     public void setImageFileNameWin(String imageFileNameWin) {
         this.ImageFileNameWin.set(imageFileNameWin);
     }
+
+
+    /**
+     * Returns the path of the image of the win
+     * @return - The path
+     */
     public String getImageFileNameWin() {
         return ImageFileNameWin.get();
     }
 
-    //endregion
 
 }

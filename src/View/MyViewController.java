@@ -41,31 +41,30 @@ import java.util.Optional;
 public class MyViewController  implements Observer, IView {
 
     @FXML
-    private MyViewModel viewModel; // The view model
-    private Stage primaryStage; //The primary stage
     public MazeDisplayer mazeDisplayer;// The maze displayer ("our widget")
-    public javafx.scene.control.TextField txtfld_rowsNum;
-    public javafx.scene.control.TextField txtfld_columnsNum;
+    public javafx.scene.control.TextField txtfld_rowsNum;//The text field that is responsible for the row
+    public javafx.scene.control.TextField txtfld_columnsNum;//The text field that is responsible for the col
     public javafx.scene.control.Label lbl_rowsNum;
     public javafx.scene.control.Label lbl_columnsNum;
     public javafx.scene.control.Label lbl_cols;
     public javafx.scene.control.Label lbl_rows;
     public javafx.scene.control.Label presentCol;
     public javafx.scene.control.Label presentRow;
-    public javafx.scene.control.Button btn_generateMaze;
-    public javafx.scene.control.Button btn_solveMaze;
-    public MenuItem exit;
-    public MenuItem menuItemSave;
+    public javafx.scene.control.Button btn_generateMaze;//Generating the maze
+    public javafx.scene.control.Button btn_solveMaze;//Solving the maze
+    public MenuItem exit;//The menu item that is responsible for the exit
+    public MenuItem menuItemSave;// The menu item that is responsible for saving the maze
+    public BorderPane BorderPaneId;//The borderPane
+    public VBox vboxLeft;//The vbox on the left
+    public VBox vboxUp;//the vbox on the right
 
-    private MediaPlayer mp;
-    public BorderPane BorderPaneId;
-    public VBox vboxLeft;
-    public VBox vboxUp;
     //The string the we bind
     private StringProperty characterPositionRow = new SimpleStringProperty();
     private StringProperty characterPositionColumn = new SimpleStringProperty();
     private String currentStyle = "classic";
-    private double originalX, originalY;
+    private MediaPlayer mp;//Media player
+    private MyViewModel viewModel; // The view model
+    private Stage primaryStage; //The primary stage
 
     /**
      * This function will set the viewModel of this view
@@ -73,7 +72,10 @@ public class MyViewController  implements Observer, IView {
      * @param viewModel - The viewModel
      */
     public void setViewModel(MyViewModel viewModel) {
+        //Set the background music
         setMusicTheme("src\\resources\\Images\\classic\\background music.mp3");
+
+        //Setting the action that the menu will take when pressed
         exit.setOnAction(event ->
                 primaryStage.fireEvent(
                         new WindowEvent(
@@ -116,21 +118,7 @@ public class MyViewController  implements Observer, IView {
     public void solveMaze() {
         btn_solveMaze.setDisable(true);
         this.viewModel.solveMaze();
-     /*   ArrayList<AState> path=new ArrayList<>();
-        path.add(new MazeState(new Position(1,1)));
-        path.add(new MazeState(new Position(2,1)));
-        path.add(new MazeState(new Position(3,1)));
-        path.add(new MazeState(new Position(4,1)));
-        path.add(new MazeState(new Position(5,1)));
-        path.add(new MazeState(new Position(6,1)));
-        path.add(new MazeState(new Position(7,2)));
-        path.add(new MazeState(new Position(7,3)));
-        path.add(new MazeState(new Position(7,4)));
-        path.add(new MazeState(new Position(7,5)));
 
-        Solution sol=new Solution(path);
-        mazeDisplayer.drawSolution(sol);
-        */
     }
 
     /**
@@ -141,23 +129,29 @@ public class MyViewController  implements Observer, IView {
      */
     @Override
     public void update(Observable o, Object arg) {
-        //If the observable is our model (right now we don't care about other observables
+        //If the observable is our model (right now we don't care about other observables)
         if (o == viewModel) {
+            //allowing the user to click on those buttons
             btn_generateMaze.setDisable(false);
             btn_solveMaze.setDisable(false);
             menuItemSave.setDisable(false);
+
+
             //Display the maze
             displayMaze(viewModel.getMaze());
-            //Allow to the user to keep generating maze
+
+            //If the user won
             if (this.viewModel.win()) {
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("WINNER!!!");
                 alert.show();
-
                 setVictoryMusic(currentStyle);
                 mazeDisplayer.win();
                 btn_solveMaze.setDisable(true);
             }
+
+            //If the player requested to solve the maze
             if (this.viewModel.lastChangeBecauseOfSolve()) {
                 this.mazeDisplayer.drawSolution(this.viewModel.getSol());
             }
@@ -168,7 +162,6 @@ public class MyViewController  implements Observer, IView {
 
     /**
      * This function is responsible for the management of the key event
-     *
      * @param keyEvent - The key event
      */
     public void KeyPressed(KeyEvent keyEvent) {
@@ -208,6 +201,10 @@ public class MyViewController  implements Observer, IView {
         viewModel.generateMaze(width, height);
     }
 
+    /**
+     * set the background music according to the style
+     * @param style - The style
+     */
     private void setBackgroundMusic(String style) {
         switch (style) {
             case "classic": {
@@ -227,7 +224,6 @@ public class MyViewController  implements Observer, IView {
 
     /**
      * This function will return the value of the string property
-     *
      * @return - The row position
      */
     public String getCharacterPositionRow() {
@@ -272,20 +268,14 @@ public class MyViewController  implements Observer, IView {
     public void About(ActionEvent actionEvent) {
         try {
 
+            //The about handle
             Stage stage = new Stage();
-
-            stage.setTitle("AboutController");
-
+            stage.setTitle("About us");
             FXMLLoader fxmlLoader = new FXMLLoader();
-
             Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
-
-            Scene scene = new Scene(root, 400, 350);
-
+            Scene scene = new Scene(root, 450 , 120);
             stage.setScene(scene);
-
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-
             stage.show();
 
         } catch (Exception e) {
@@ -304,10 +294,13 @@ public class MyViewController  implements Observer, IView {
 
         //Receiving the path and than creating actual file there
         FileChooser fileChooser = new FileChooser();
+        //Defining the .maze to be the end of the file
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text doc(*.maze)", "*.maze"));
         File file = fileChooser.showOpenDialog(primaryStage);
+
         if (file == null)
             return;
+
         if (file.getAbsolutePath().length() <= 5 || !file.getAbsolutePath().substring(file.getAbsolutePath().length() - 4).equals("maze")) {
             Alert unvalidFile = new Alert(Alert.AlertType.ERROR);
             unvalidFile.setContentText("Unvalid file");
@@ -340,11 +333,15 @@ public class MyViewController  implements Observer, IView {
      */
     public void exit() {
 
+        //Stop the servers and the media player
         this.viewModel.stopServers();
         mp.stop();
 
     }
 
+    /**
+     * This function is responsible to ask the user if he wants another game
+     */
     public void anotherGame() {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -363,8 +360,10 @@ public class MyViewController  implements Observer, IView {
 
     }
 
-    @FXML
-
+    /**
+     * This function will change the solving algorithm of the maze
+     * @param event
+     */
     public void changeAlgorithm(ActionEvent event) {
         javafx.scene.control.MenuItem node = (javafx.scene.control.MenuItem) event.getSource();
         String data = (String) node.getUserData();
@@ -388,6 +387,10 @@ public class MyViewController  implements Observer, IView {
         }
     }
 
+    /**
+     * This function will ser the victory music according to the style
+     * @param style - The style
+     */
     private void setVictoryMusic(String style) {
 
         switch (style) {
@@ -545,19 +548,23 @@ public class MyViewController  implements Observer, IView {
             }
 
         }
+        //Draw the changes
         mazeDisplayer.redraw();
     }
 
-    //Has a potential to solve the size problem
+    /**
+     * This function will set the way this application will handle a resize event
+     * @param scene
+     */
     public void setResizeEvent(Scene scene) {
-        long width = 0;
-        long height = 0;
+
+
+        //The width changes
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
 
                 mazeDisplayer.setWidth(newSceneWidth.doubleValue() / 8 * 6);
-
 
                 if (viewModel.win()) {
                     mazeDisplayer.win();
@@ -568,6 +575,7 @@ public class MyViewController  implements Observer, IView {
 
             }
         });
+        //The height changes
         scene.heightProperty().addListener(new ChangeListener<Number>() {
                                                @Override
                                                public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
@@ -584,18 +592,28 @@ public class MyViewController  implements Observer, IView {
         );
     }
 
-
+    /**
+     * This function will set the primary stage
+     * @param primaryStage - The primary stage
+     */
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
+    /**
+     * This function will set the music in the background using a given path
+     * @param path - The given path
+     */
     private void setMusicTheme(String path) {
+        //If there is a mediaPlayer, stop it
         if (mp != null) {
 
             mp.stop();
         }
+        //Create a new media player using the given path
         Media m = new Media(Paths.get(path).toUri().toString());
         mp = new MediaPlayer(m);
+        //Play the music
         mp.play();
     }
 

@@ -7,7 +7,6 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
-
 import java.io.*;
 import java.net.InetAddress;
 import java.util.Observable;
@@ -20,6 +19,7 @@ import java.io.ObjectOutputStream;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 
 /**
  * This class will be our model (The maze).
@@ -37,25 +37,44 @@ public class MyModel extends Observable implements IModel {
     private int characterPositionColumnIndex;//The column index of the character's position
     private Solution solution;
 
-
+    /**
+     * This function will start the servers
+     */
+    public void startServer()
+    {
+        mazeGeneratingServer.start();
+        solveSearchProblemServer.start();
+    }
+    /**
+     * this function starts the 2 servers
+     */
     public void sartServer()
     {
         mazeGeneratingServer.start();
         solveSearchProblemServer.start();
     }
 
+    /**
+     * this function should write to a file the current state of the maze
+     * @param filePath- where to write the maze
+     */
     private void toFile(String filePath){
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(filePath, "UTF-8");
+            //we write the position of the character
             writer.println(characterPositionRowIndex);
             writer.println(characterPositionColumnIndex);
+            //we write the position of the start
             writer.println(myMaze.getStartPosition().GetRowIndex());
             writer.println(myMaze.getStartPosition().GetColumnIndex());
+            //we write the position of the end
             writer.println(myMaze.getGoalPosition().GetRowIndex());
             writer.println(myMaze.getGoalPosition().GetColumnIndex());
+            //we write the size of the maze
             writer.println(height);
             writer.println(width);
+            //we write the values of every cell in the maze
             int [][] maze=myMaze.getMaze();
             for (int i=0;i<height;i++){
                 for(int j=0;j<width;j++){
@@ -69,26 +88,33 @@ public class MyModel extends Observable implements IModel {
 
         }
     }
+
+    /**
+     * we extract from the file the current position of the maze
+     * @param filePath-from where to extract the maze
+     */
     private void fromFile(String filePath){
         try {
             File file = new File(filePath);
             //for(int i=0;i<file.length())
             Scanner sc = new Scanner(file);
+            //we extract the position of the character
             characterPositionRowIndex=Integer.parseInt(sc.nextLine());
             characterPositionColumnIndex=Integer.parseInt(sc.nextLine());
+            //we extract the start and end positions
             Position start= new Position(Integer.parseInt(sc.nextLine()),Integer.parseInt(sc.nextLine()));
             Position end= new Position(Integer.parseInt(sc.nextLine()),Integer.parseInt(sc.nextLine()));
+            //we extract the size of the maze
             int numOfRows=Integer.parseInt(sc.nextLine());
             int numOfColumns=Integer.parseInt(sc.nextLine());
+            //we extract the values of the cells in the maze
             int [][] temp= new int[numOfRows][numOfColumns];
-            for(int i=0;i<numOfRows;i++){
-                for(int j=0;j<numOfColumns;j++){
-                    temp[i][j]=Integer.parseInt(sc.nextLine());
+            for(int i=0;i<numOfRows;i++) {
+                for (int j = 0; j < numOfColumns; j++) {
+                    temp[i][j] = Integer.parseInt(sc.nextLine());
                 }
                 sc.nextLine();
             }
-            //DAFAQ???
-
             myMaze= new Maze(temp,start,end);
         }
         catch (FileNotFoundException var12) {
@@ -109,19 +135,24 @@ public class MyModel extends Observable implements IModel {
         this.height=height;
         changeCause=false;
         try {
+            // we make a connection with the server the generates mazes
             Client client = new Client(InetAddress.getLocalHost(), 5400, new IClientStrategy() {
                 public void clientStrategy(InputStream inFromServer, OutputStream outToServer) {
                     try {
+                        //we create output and input streams that should communicate with the server
                         ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
                         ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                         toServer.flush();
+                        //we create the size of the maze
                         int[] mazeDimensions = new int[]{width, height};
+                        //we write to the server the size of the maze
                         toServer.writeObject(mazeDimensions);
                         toServer.flush();
                         byte[] compressedMaze = (byte[])fromServer.readObject();
                         InputStream is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
                         byte[] decompressedMaze = new byte[height*width+width+height];
                         is.read(decompressedMaze);
+                        //we create the maze
                         Maze maze = new Maze(decompressedMaze);
                         myMaze=maze;
 
@@ -141,6 +172,13 @@ public class MyModel extends Observable implements IModel {
         setChanged();
         notifyObservers();
     }
+
+    /**
+     * this function checks if a move is legal move
+     * @param row- the row of the position that the character wants to go to
+     * @param col- the column of the position that the character wants to go to
+     * @return
+     */
     public boolean isLegalMoveMazeCheck(int row,int col)
     {
         if(myMaze==null)
@@ -150,6 +188,9 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
+    /**
+     * this function should move the character
+     */
     public void moveCharacter(KeyCode movement) {
         this.changeCause=false;
         int tempRow = characterPositionRowIndex;
@@ -193,6 +234,7 @@ public class MyModel extends Observable implements IModel {
                 tempRow--;
                 break;
         }
+        //we update the position of the character to be the new position
         if (isLegalMoveMazeCheck(tempRow, tempColumn)) {
             characterPositionRowIndex = tempRow;
             characterPositionColumnIndex = tempColumn;
@@ -235,9 +277,9 @@ public class MyModel extends Observable implements IModel {
 
     /**
      * This function will check whether the new move is a legal move or not
-     * @param row - row number
-     * @param col - col number
-     * @return - Returns weather the move is legak
+     * @param row- the row of the position that the character wants to go to
+     * @param col- the column of the position that the character wants to go to
+     * @return - Returns weather the move is legal
      */
     public boolean IsLegalMove(int row,int col)
     {
@@ -246,21 +288,27 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
+    /**
+     * this function should solve the maze
+     */
     public Solution solveMaze() {
         this.changeCause=true;
 
         try {
+            //we make a connection with the server that solve mazes
             Client client = new Client(InetAddress.getLocalHost(), 5401, new IClientStrategy() {
                 public void clientStrategy(InputStream inFromServer, OutputStream outToServer) {
                     try {
+                        //we create output and input streams that should communicate with the server
                         ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
                         ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                         toServer.flush();
+                        //we send our maze the server
                         toServer.writeObject(myMaze);
                         toServer.flush();
+                        //we get the solution from the server
                         Solution mazeSolution = (Solution)fromServer.readObject();
                         solution=mazeSolution;
-
                         ArrayList<AState> mazeSolutionSteps = mazeSolution.getSolutionPath();
 
                     } catch (Exception var10) {
@@ -279,20 +327,34 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
+    /**
+     * checks if a move occurred because of a change of because of other rezone
+     */
     public boolean lastChangeBecauseOfSolve() {
         return this.changeCause;
     }
 
     @Override
+    /**
+     * we save the maze
+     */
     public void saveMaze(String path) {
         this.toFile(path);
     }
 
+    /**
+     * we extract the maze from the file
+     * @param path-this is the path to the file
+     */
     @Override
     public void loadMaze(String path) {
         this.fromFile(path);
     }
 
+    /**
+     * checks if the player won
+     * @return- true if he won or false if he failed
+     */
     @Override
     public boolean win() {
         if(myMaze==null)
@@ -300,9 +362,17 @@ public class MyModel extends Observable implements IModel {
         return this.myMaze.getGoalPosition().GetRowIndex()==this.characterPositionRowIndex && this.myMaze.getGoalPosition().GetColumnIndex()==this.characterPositionColumnIndex;
     }
 
+    /**
+     * this function should give the solution of the maze
+     * @return- the solution of the maze
+     */
     public Solution getSolution(){
         return solution;
     }
+
+    /**
+     * this function should shut down the servers
+     */
     public void stopServers()
     {
         if(this.solveSearchProblemServer!=null)
