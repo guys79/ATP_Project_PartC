@@ -73,7 +73,7 @@ public class MyViewController  implements Observer, IView {
      */
     public void setViewModel(MyViewModel viewModel) {
         //Set the background music
-        setMusicTheme("src\\resources\\Images\\classic\\background music.mp3");
+        setMusicTheme("/Images/classic/background music.mp3");
 
         //Setting the action that the menu will take when pressed
         exit.setOnAction(event ->
@@ -208,15 +208,16 @@ public class MyViewController  implements Observer, IView {
     private void setBackgroundMusic(String style) {
         switch (style) {
             case "classic": {
-                setMusicTheme("src\\resources\\Images\\classic\\background music.mp3");
+                setMusicTheme("/Images/classic/background music.mp3");
                 break;
             }
+
             case "Irish": {
-                setMusicTheme("src\\resources\\Images\\leprekon\\background music.mp3");
+                setMusicTheme("/Images/leprekon/background music.mp3");
                 break;
             }
             case "harry potter": {
-                setMusicTheme("src\\resources\\Images\\harry potter\\background music.mp3");
+                setMusicTheme("/Images/harry potter/background music.mp3");
                 break;
             }
         }
@@ -395,16 +396,16 @@ public class MyViewController  implements Observer, IView {
 
         switch (style) {
             case "classic": {
-                setMusicTheme("src\\resources\\Images\\classic\\win music.mp3");
+                setMusicTheme("/Images/classic/win music.mp3");
                 break;
             }
             case "Irish": {
-                setMusicTheme("src\\resources\\Images\\leprekon\\win music.mp3");
+                setMusicTheme("/Images/leprekon/win music.mp3");
                 break;
             }
             case "harry potter": {
 
-                setMusicTheme("src\\resources\\Images\\harry potter\\win music.mp3");
+                setMusicTheme("/Images/harry potter/win music.mp3");
                 break;
             }
         }
@@ -427,13 +428,13 @@ public class MyViewController  implements Observer, IView {
             case "classic": {
 
 
-                mazeDisplayer.setImageFileNameCharacter("src\\resources\\Images\\classic\\character1.jpg");
-                mazeDisplayer.setImageFileNameEnd("src\\resources\\Images\\classic\\endClassic.jpg");
-                mazeDisplayer.setImageFileNameWall("src\\resources\\Images\\classic\\wall4.jpg");
-                mazeDisplayer.setImageFileNameStart("src\\resources\\Images\\classic\\startClassic.png");
-                mazeDisplayer.setImageFilePath("src\\resources\\Images\\classic\\path1.jpg");
-                mazeDisplayer.setImageFileNameSol("src\\resources\\Images\\classic\\sol.jpg");
-                mazeDisplayer.setImageFileNameWin("src\\resources\\Images\\classic\\win.jpg");
+                mazeDisplayer.setImageFileNameCharacter("/Images/classic/character1.jpg");
+                mazeDisplayer.setImageFileNameEnd("/Images/classic/endClassic.jpg");
+                mazeDisplayer.setImageFileNameWall("/Images/classic/wall4.jpg");
+                mazeDisplayer.setImageFileNameStart("/Images/classic/startClassic.png");
+                mazeDisplayer.setImageFilePath("/Images/classic/path1.jpg");
+                mazeDisplayer.setImageFileNameSol("/Images/classic/sol.jpg");
+                mazeDisplayer.setImageFileNameWin("/Images/classic/win.jpg");
 
                 lbl_columnsNum.setStyle("-fx-background-color: bisque");
                 presentCol.setStyle("-fx-background-color: bisque");
@@ -461,23 +462,23 @@ public class MyViewController  implements Observer, IView {
                 BorderPaneId.setStyle("-fx-background-color: bisque");
 
                 if (this.viewModel.win()) {
-                    setMusicTheme("src\\resources\\Images\\classic\\win music.mp3");
+                    setMusicTheme("/Images/classic/win music.mp3");
                 } else {
-                    setMusicTheme("src\\resources\\Images\\classic\\background music.mp3");
+                    setMusicTheme("/Images/classic/background music.mp3");
                 }
                 currentStyle = "classic";
                 break;
             }
             case "Irish": {
 
-                BorderPaneId.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("resources/Images/leprekon/LeprekonTheme.jpg").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
-                mazeDisplayer.setImageFileNameCharacter("src\\resources\\Images\\leprekon\\character.jpg");
-                mazeDisplayer.setImageFileNameEnd("src\\resources\\Images\\leprekon\\end.jpg");
-                mazeDisplayer.setImageFileNameWall("src\\resources\\Images\\leprekon\\wall.jpg");
-                mazeDisplayer.setImageFileNameStart("src\\resources\\Images\\leprekon\\leprekonStart.jpg");
-                mazeDisplayer.setImageFilePath("src\\resources\\Images\\leprekon\\path.jpg");
-                mazeDisplayer.setImageFileNameSol("src\\resources\\Images\\leprekon\\sol.jpg");
-                mazeDisplayer.setImageFileNameWin("src\\resources\\Images\\leprekon\\win.jpg");
+                BorderPaneId.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getResource("/Images/leprekon/LeprekonTheme.jpg").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
+                mazeDisplayer.setImageFileNameCharacter("/Images/leprekon/character.jpg");
+                mazeDisplayer.setImageFileNameEnd("/Images/leprekon/end.jpg");
+                mazeDisplayer.setImageFileNameWall("/Images/leprekon/wall.jpg");
+                mazeDisplayer.setImageFileNameStart("/Images/leprekon/leprekonStart.jpg");
+                mazeDisplayer.setImageFilePath("/Images/leprekon/path.jpg");
+                mazeDisplayer.setImageFileNameSol("/Images/leprekon/sol.jpg");
+                mazeDisplayer.setImageFileNameWin("/Images/leprekon/win.jpg");
                 lbl_columnsNum.setStyle("-fx-background-color: black");
                 lbl_rowsNum.setStyle("-fx-background-color: black");
                 presentCol.setStyle("-fx-background-color: black");
@@ -500,23 +501,23 @@ public class MyViewController  implements Observer, IView {
                 lbl_rows.setStyle("-fx-background-color: black");
                 lbl_cols.setStyle("-fx-background-color: black");
                 if (this.viewModel.win()) {
-                    setMusicTheme("src\\resources\\Images\\leprekon\\win music.mp3");
+                    setMusicTheme("/Images/leprekon/win music.mp3");
                 } else {
-                    setMusicTheme("src\\resources\\Images\\leprekon\\background music.mp3");
+                    setMusicTheme("/Images/leprekon/background music.mp3");
                 }
                 currentStyle = "Irish";
                 break;
 
             }
             case "harry potter": {
-                BorderPaneId.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("resources/Images/harry potter/background2.jpg").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
-                mazeDisplayer.setImageFileNameCharacter("src\\resources\\Images\\harry potter\\character2.jpg");
-                mazeDisplayer.setImageFileNameEnd("src\\resources\\Images\\harry potter\\end.jpg");
-                mazeDisplayer.setImageFilePath("src\\resources\\Images\\harry potter\\wall.jpg");
-                mazeDisplayer.setImageFileNameStart("src\\resources\\Images\\harry potter\\start.jpg");
-                mazeDisplayer.setImageFileNameWall("src\\resources\\Images\\harry potter\\path.jpg");
-                mazeDisplayer.setImageFileNameSol("src\\resources\\Images\\harry potter\\sol.jpg");
-                mazeDisplayer.setImageFileNameWin("src\\resources\\Images\\harry potter\\win.jpg");
+                BorderPaneId.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getResource("/Images/harry potter/background2.jpg").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
+                mazeDisplayer.setImageFileNameCharacter("/Images/harry potter/character2.jpg");
+                mazeDisplayer.setImageFileNameEnd("/Images/harry potter/end.jpg");
+                mazeDisplayer.setImageFilePath("/Images/harry potter/wall.jpg");
+                mazeDisplayer.setImageFileNameStart("/Images/harry potter/start.jpg");
+                mazeDisplayer.setImageFileNameWall("/Images/harry potter/path.jpg");
+                mazeDisplayer.setImageFileNameSol("/Images/harry potter/sol.jpg");
+                mazeDisplayer.setImageFileNameWin("/Images/harry potter/win.jpg");
 
                 lbl_columnsNum.setStyle("-fx-background-color: black");
                 lbl_rowsNum.setStyle("-fx-background-color: black");
@@ -540,9 +541,9 @@ public class MyViewController  implements Observer, IView {
                 lbl_cols.setStyle("-fx-background-color: black");
                 if (this.viewModel.win()) {
 
-                    setMusicTheme("src\\resources\\Images\\harry potter\\win music.mp3");
+                    setMusicTheme("/Images/harry potter/win music.mp3");
                 } else {
-                    setMusicTheme("src\\resources\\Images\\harry potter\\background music.mp3");
+                    setMusicTheme("/Images/harry potter/background music.mp3");
                 }
                 currentStyle = "harry potter";
             }
@@ -611,7 +612,13 @@ public class MyViewController  implements Observer, IView {
             mp.stop();
         }
         //Create a new media player using the given path
-        Media m = new Media(Paths.get(path).toUri().toString());
+        Media m=null;
+        try{
+            m = new Media(getClass().getResource(path).toURI().toString());
+        }
+        catch (Exception e){
+            System.out.println(path);
+        }
         mp = new MediaPlayer(m);
         //Play the music
         mp.play();

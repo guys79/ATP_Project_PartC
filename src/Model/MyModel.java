@@ -213,6 +213,22 @@ public class MyModel extends Observable implements IModel {
             case NUMPAD4:
                 tempColumn--;
                 break;
+            //Up
+            case UP:
+                tempRow--;
+                break;
+            //Down
+            case DOWN:
+                tempRow++;
+                break;
+            //Right
+            case RIGHT:
+                tempColumn++;
+                break;
+            //Left
+            case LEFT:
+                tempColumn--;
+                break;
             //Right + Down
             case NUMPAD3:
                 tempColumn++;

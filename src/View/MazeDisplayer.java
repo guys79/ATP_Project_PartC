@@ -10,7 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.lang.Exception;
 import java.util.ArrayList;
 
 
@@ -158,16 +158,16 @@ public class MazeDisplayer extends Canvas {
 
                 try {
                     //Getting the images
-                    Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
-                    Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
-                    Image end = new Image(new FileInputStream(ImageFileNameEnd.get()));
-                    Image start = new Image(new FileInputStream(ImageFileNameStart.get()));
+                    Image wallImage = new Image(getClass().getResourceAsStream(ImageFileNameWall.get()));
+                    Image characterImage = new Image(getClass().getResourceAsStream(ImageFileNameCharacter.get()));
+                    Image end = new Image(getClass().getResourceAsStream(ImageFileNameEnd.get()));
+                    Image start = new Image(getClass().getResourceAsStream(ImageFileNameStart.get()));
                     Image pathImage=null;
 
                     //If the path exist
                     if(this.isPathImageExist)
                     {
-                        pathImage = new Image(new FileInputStream(ImageFilePath.get()));
+                        pathImage = new Image(getClass().getResourceAsStream(ImageFilePath.get()));
                     }
 
 
@@ -214,7 +214,7 @@ public class MazeDisplayer extends Canvas {
 
                     //Draw the character
                     gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
-                } catch (FileNotFoundException e) {
+                } catch (Exception e) {
 
                     e.printStackTrace();
 
@@ -258,8 +258,8 @@ public class MazeDisplayer extends Canvas {
             //If there is a solution image
             Image solImg=null;
             try {
-                solImg = new Image(new FileInputStream(this.ImageFileNameSol.get()));
-            } catch (FileNotFoundException e) {
+                solImg = new Image(getClass().getResourceAsStream(this.ImageFileNameSol.get()));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             for (; i < path.size() - j; i++) {
@@ -290,12 +290,12 @@ public class MazeDisplayer extends Canvas {
             try {
 
                 //The win image
-                Image winImg = new Image(new FileInputStream(this.ImageFileNameWin.get()));
+                Image winImg = new Image(getClass().getResourceAsStream(this.ImageFileNameWin.get()));
                 gc.drawImage(winImg,0,0,getWidth(),getHeight());
 
 
             }
-            catch (FileNotFoundException e) {
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
